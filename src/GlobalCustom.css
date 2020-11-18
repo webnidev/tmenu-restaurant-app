@@ -1,0 +1,63 @@
+.MainContainer {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.PageTitle h1 span {
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+.CardsHome {
+    margin: 2%;
+}
+
+.PageTitle {
+    margin: 0 auto;
+    text-align: center;
+    height: 72.50px;
+    width: 100%;
+}
+
+.PageTitle h1 {
+   text-transform: uppercase;
+   font-weight: bold;
+}
+
+.PageContainer {
+    width: calc(100% - 256px);
+}
+
+h1, h2, h3, h4, h5, h6, p, span, a {
+    font-family: 'Roboto', Arial, Helvetica, sans-serif;
+}
+
+.logo {
+    margin: 1% auto;
+    display: block;
+    padding: 1% 0;
+}
+
+.white {
+    color: white;
+}
+
+.paddingBtn {
+    padding: 2% 4% !important;
+}
+
+.Menu ul > a {
+    font-weight: 600 !important;
+}
+
+.Menu {
+    height: 100vh !important;
+}
+
+.Divider {
+    border-color: #ffffff40;
+}
+
+.mdc-layout-grid {
+    padding: 0;
+}
