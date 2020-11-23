@@ -1,9 +1,21 @@
-import React from 'react';
+import React from "react";
+import { Grid, Typography } from "rmwc";
 
-// import { Container } from './styles';
 
-const Printers = () => {
-  return <div />;
-}
+const PrintersIndex = () => {
+  return (
+    <>          
+     <div className={"PageContainer"}>
+          <div className={"PageTitle"}>        
+            <h1><Typography use="headline1">Impressoras</Typography></h1>             
+          </div>
+            <Grid>
+                           
+            </Grid> 
+        </div>   
+      
+    </>
+  );
+};
 
-export default Printers;
+export default PrintersIndex;

@@ -1,29 +1,32 @@
 import React from 'react';
-import { Link, BrowserRouter, Routes } from 'react-router-dom';
+import { Link, BrowserRouter, Routes, Route } from 'react-router-dom';
 import Logo from './Logo';
 import 'material-icons';
-import {
-    Button,
-    Drawer,
+
+  import { Drawer,
     DrawerHeader,
-    DrawerTitle,
-    DrawerSubtitle,
     DrawerContent,
     List,
     ListItem,
-    ListItemGraphic,
-    Icon
-  } from 'rmwc';
+    ListItemGraphic } from "rmwc";
   
 import 'rmwc/dist/styles';
 import './GlobalCustom.css';
+import Home from './Components/Home';
+import MenuIndex from './Components/Menu/MenuIndex';
+import AccountIndex from './Components/Account/AccountIndex';
+import CustomersIndex from './Components/Customers/CustomersIndex';
+import InvoicesIndex from './Components/Invoices/InvoicesIndex';
+import OrdersIndex from './Components/Orders/OrdersIndex';
+import TablesIndex from './Components/Tables/TablesIndex';
+import UsersIndex from './Components/Users/UsersIndex';
 
 
 const MainNav = () => {
   return (
     <>
     <BrowserRouter>
-    <Routes>
+   
       <Drawer>
         <DrawerHeader>
           <Logo/>
@@ -49,8 +52,28 @@ const MainNav = () => {
           </List>
         </DrawerContent>
       </Drawer>
-      </Routes>
+
+       <Routes>
+          <Route path="/" element={<Home/>} end/>
+          <Route path="/cardapio" element={<MenuIndex/>} />
+          <Route path="/pedidos" element={<OrdersIndex/>} />
+          <Route path="/mesas" element={<TablesIndex/>} />
+          <Route path="/clientes" element={<CustomersIndex/>} />
+          <Route path="/minhas-faturas" element={<InvoicesIndex/>} />
+          <Route path="/usuarios" element={<UsersIndex/>} />
+          <Route path="/relatorios" element={<h1>Relatórios</h1>} />
+          <Route path="/meus-dados" element={<AccountIndex/>} />
+          <Route path="/configuracoes" element={<h1>Configurações</h1>} />
+          <Route path="/impressoras" element={<h1>Impressoras</h1>} />
+
+        </Routes>         
+      
       </BrowserRouter>
+
+      
+       
+  
+
     </>
   );
 }
