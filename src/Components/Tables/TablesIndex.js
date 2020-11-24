@@ -1,5 +1,11 @@
 import React from "react";
-import { Grid, Typography } from "rmwc";
+import { Grid,
+  GridCell,
+  Typography,
+  Card,
+  Badge,
+  Button,
+  GridRow } from "rmwc";
 
 
 const TablesIndex = () => {
@@ -9,8 +15,71 @@ const TablesIndex = () => {
           <div className={"PageTitle"}>        
             <h1><Typography use="headline1">Mesas</Typography></h1>             
           </div>
-            <Grid>
-                           
+          <Grid className={"CardsMesas"} z={1}>
+              <GridCell span={3}>
+                <Card>
+                  <Grid>  
+                      <GridRow>
+                        <GridCell span={6}><Badge className={"TmenuSuccess"} align="inline" label="Em atendimento" /> </GridCell>
+                        <GridCell span={6}><Button style={{color: "black"}} label="Ações" icon="settings" /></GridCell>
+                      </GridRow>
+                  </Grid>
+                  <span className={"CardsMesasTitle"}>MESA</span>
+                  <span className={"CardsMesasValue"}>12</span>
+                  <span className={"AttendedBy"}>Mesa atendida por: <span className={"strong"}>João</span></span>
+                  <div className={"CardsMesasAlertZone"}>
+                      Alert Zone
+                  </div>
+                </Card>
+              </GridCell>
+              <GridCell span={3}>
+                <Card>
+                <Grid>  
+                      <GridRow>
+                        <GridCell span={6}><Badge className={"TmenuSuccess"} align="inline" label="Em atendimento" /> </GridCell>
+                        <GridCell span={6}><Button style={{color: "black"}} label="Ações" icon="settings" /></GridCell>
+                      </GridRow>
+                  </Grid>
+                  <span className={"CardsMesasTitle"}>MESA</span>
+                  <span className={"CardsMesasValue"}>09</span>
+                  <span className={"AttendedBy"}>Mesa atendida por: <span className={"strong"}>João</span></span>
+                  <div className={"CardsMesasAlertZone"}>
+                      Alert Zone
+                  </div>
+                </Card>
+              </GridCell>
+              <GridCell span={3}>
+                <Card>
+                <Grid>  
+                      <GridRow>
+                        <GridCell span={6}><Badge className={"TmenuSuccess"} align="inline" label="Em atendimento" /> </GridCell>
+                        <GridCell span={6}><Button style={{color: "black"}} label="Ações" icon="settings" /></GridCell>
+                      </GridRow>
+                  </Grid>
+                  <span className={"CardsMesasTitle"}>MESA</span>
+                  <span className={"CardsMesasValue"}>07</span>
+                  <span className={"AttendedBy"}>Mesa atendida por: <span className={"strong"}>João</span></span>
+                  <div className={"CardsMesasAlertZone"}>
+                      Alert Zone
+                  </div>
+                </Card>
+              </GridCell>
+              <GridCell span={3}>
+                <Card>
+                <Grid>  
+                      <GridRow>
+                        <GridCell span={6}><Badge className={"TmenuSuccess"} align="inline" label="Em atendimento" /> </GridCell>
+                        <GridCell span={6}><Button style={{color: "black"}} label="Ações" icon="settings" /></GridCell>
+                      </GridRow>
+                  </Grid>
+                  <span className={"CardsMesasTitle"}>MESA</span>
+                  <span className={"CardsMesasValue"}>05</span>
+                  <span className={"AttendedBy"}>Mesa atendida por: <span className={"strong"}>João</span></span>
+                  <div className={"CardsMesasAlertZone"}>
+                      Alert Zone
+                  </div>
+                </Card>
+              </GridCell>                     
             </Grid> 
         </div>   
       

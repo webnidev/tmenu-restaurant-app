@@ -3,20 +3,200 @@
     flex-wrap: wrap;
 }
 
+.mdc-menu-surface--anchor {
+    display: initial;
+}
+
 .PageTitle h1 span {
     font-weight: bold;
     font-size: 1.2em;
 }
 
-.CardsHome {
+.CardsHome, .CardsMesas {
     margin: 2%;
+}
+
+.CustomInputSearch {
+    min-width: 300px;
+    display: inline-grid;
+    background: white !important;
+    margin-right: 10px;
+    max-height: 51px;
+}
+
+.mdc-data-table {
+    overflow-x: inherit;
+}
+
+.BtnDefaultTmenu {
+    background: black !important;
+    color: white !important;
+    padding: 2.5% 2% !important;
+    margin-right: 8px;
+    border-radius: 8px;
+    max-height: 51px;
+}
+
+.TmenuSuccess {
+    background: #4CAF50;
+    color: white;
+}
+
+.TmenuDanger {
+    background: #b00020;
+    color: white;
+}
+
+.TmenuInfo {
+    background: #ff9800;
+    color: white;
+}
+
+.TemnuInProcess {
+    background: #2196f3;
+    color: white;
+}
+
+.TmenuPrimary {
+    background: black;
+    color: white;
+}
+
+.TmenuDisabled {
+    background: #bbb;
+    color: #666;
+}
+
+table.mdc-data-table__table a {
+    color: black;
+    font-weight: bold;
+}
+
+.BtnSecondaryAction {
+    color:  black !important;
+}
+
+.mdc-dialog__content * {
+    margin-bottom: 3%;
+}
+
+.mdc-dialog__surface {
+    padding: 5% 2%;
+}
+
+.TabelaProdutos th.rmwc-data-table__cell.mdc-data-table__header-cell {
+    font-weight: bold;
+}
+
+.mdc-data-table__cell {
+    box-sizing: content-box;
+}
+
+.mdc-data-table__row {
+    border-top-width: 6px;
+    border-top-style: solid;
+    border-color: #e3e3e3;
+}
+
+.AttendedBy {
+    font-style: italic;
+    color: #737373;
+    margin-top: 2%;
+    font-weight: 400;
+}
+
+.CardsMesasAlertZone {
+    background: #ccc;
+    margin-top: 5%;
+    padding: 3% 1%;
+}
+
+.CardsMesas.mdc-layout-grid {
+    font-family: 'Roboto', Helvetica, Arial, sans-serif;
+}
+
+.CardsMesas .rmwc-badge {
+    font-weight: 400;
+}
+
+.mdc-menu.mdc-menu-surface.mdc-menu-surface--open i {
+    margin-right: 8px;
+}
+
+.BtnDefaultSearch {
+    height: 51px;
+    background: black !important;
+    color: white !important;
+    font-weight: 600 !important;
+    border-radius: 8px;
+}
+
+button.rmwc-icon {
+    text-align: center;
+    margin: 0 auto;
+    display: flex;
+    margin-top: 3px;
+}
+
+
+.ToFlex {
+    display: flex;
+}
+
+.ToEnd {
+    justify-self: end;
+}
+
+.CustomContainer {
+    margin: 2%;
+}
+
+.CardsHome .mdc-card {
+    box-shadow: none;
+    text-align: center;
+    padding: 5%;
+    margin: 0 auto;
+}
+
+.CardsMesas .mdc-card {
+    box-shadow: none;
+    text-align: center;
+    padding: 5% 0 0 0;
+    margin: 0 auto;
+}
+
+.CardsHome i {
+    margin: 0 auto;
+}
+
+.rmwc-data-table__cell--align-end {
+    text-align: center;
+}
+
+.CardsHomeTitle, .CardsMesasTitle {
+    font-size: 16px;
+    color: #737373;
+    font-weight: bold;
+    padding-top: 2%;
+}
+
+.CardsHomeValue {
+    font-size: 64px;
+    padding-top: 3%;
+    font-weight: bold;
+}
+
+.CardsMesasValue {
+    font-size: 64px;
+    font-weight: bold;
 }
 
 .PageTitle {
     margin: 0 auto;
-    text-align: center;
+    text-align: left;
     height: 72.50px;
     width: 100%;
+    margin-left: 2%;
 }
 
 .PageTitle h1 {
@@ -24,8 +204,12 @@
    font-weight: bold;
 }
 
+.strong {
+    font-weight: bold !important;
+}
+
 .PageContainer {
-    width: calc(100% - 256px);
+    width: calc(100% - 290px);
 }
 
 h1, h2, h3, h4, h5, h6, p, span, a {
@@ -33,7 +217,7 @@ h1, h2, h3, h4, h5, h6, p, span, a {
 }
 
 .logo {
-    margin: 1% auto;
+    margin: 3% auto 0% auto;
     display: block;
     padding: 1% 0;
 }
