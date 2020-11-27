@@ -12,6 +12,10 @@
     font-size: 1.2em;
 }
 
+.mdc-drawer .mdc-list-item__graphic {
+    color: rgb(0 0 0);
+}
+
 .CardsHome, .CardsMesas {
     margin: 2%;
 }
@@ -42,9 +46,17 @@
     color: white;
 }
 
+.TemnuSuccessText {
+    color: #4CAF50;
+}
+
 .TmenuDanger {
     background: #b00020;
     color: white;
+}
+
+.TmenuDangerText {
+    color: #b00020;
 }
 
 .TmenuInfo {
@@ -52,9 +64,17 @@
     color: white;
 }
 
+.TmenuInfoText {
+    color: #ff9800;
+}
+
 .TemnuInProcess {
     background: #2196f3;
     color: white;
+}
+
+.TemnuInProcessText {
+    color: #2196f3;
 }
 
 .TmenuPrimary {
@@ -100,15 +120,49 @@ table.mdc-data-table__table a {
 
 .AttendedBy {
     font-style: italic;
-    color: #737373;
+    color: #2196F3;
     margin-top: 2%;
     font-weight: 400;
+}
+
+li.mdc-ripple-upgraded.mdc-list-item strong {
+    padding-left: 2%;
+}
+
+.AttendedByNoOne {
+    font-style: italic;
+    color: red;
+    margin-top: 2%;
+    font-weight: 400;
+}
+
+.AlertZoneRequestTheBill {
+    background: #FF4444 !important;
+    color: white;
+}
+
+.mdc-card a {
+    text-decoration: none !important;
+}
+
+.CardsMesasAlertZone * {
+    padding: 0 0.8%;
+}
+
+.CardsMesasAlertZone i {
+    line-height: 30px !important;
 }
 
 .CardsMesasAlertZone {
     background: #ccc;
     margin-top: 5%;
     padding: 3% 1%;
+    display: flex;
+    justify-content: center;
+}
+
+a .CardsMesasAlertZone{
+    text-decoration: none !important;
 }
 
 .CardsMesas.mdc-layout-grid {

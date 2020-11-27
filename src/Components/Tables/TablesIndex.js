@@ -5,7 +5,8 @@ import { Grid,
   Card,
   Badge,
   Button,
-  GridRow } from "rmwc";
+  GridRow,
+  Icon } from "rmwc";
 
 
 const TablesIndex = () => {
@@ -58,10 +59,13 @@ const TablesIndex = () => {
                   </Grid>
                   <span className={"CardsMesasTitle"}>MESA</span>
                   <span className={"CardsMesasValue"}>07</span>
-                  <span className={"AttendedBy"}>Mesa atendida por: <span className={"strong"}>João</span></span>
-                  <div className={"CardsMesasAlertZone"}>
-                      Alert Zone
-                  </div>
+                  <span className={"AttendedByNoOne"}>Sem garçom definido</span>
+                    <a href="">
+                      <div className={"CardsMesasAlertZone AlertZoneRequestTheBill"}>                        
+                        <Icon icon="notification_important" />
+                        <Typography use="overline" className={"strong"}> Pedindo a conta!</Typography>
+                      </div>
+                    </a>
                 </Card>
               </GridCell>
               <GridCell span={3}>
