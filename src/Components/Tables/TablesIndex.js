@@ -8,6 +8,8 @@ import { Grid,
   GridRow,
   Icon } from "rmwc";
 
+  import "./Tables.css";
+
 
 const TablesIndex = () => {
   return (
@@ -43,7 +45,7 @@ const TablesIndex = () => {
                   </Grid>
                   <span className={"CardsMesasTitle"}>MESA</span>
                   <span className={"CardsMesasValue"}>09</span>
-                  <span className={"AttendedBy"}>Mesa atendida por: <span className={"strong"}>João</span></span>
+                  <span className={"AttendedByNoOne"}>Sem garçom definido</span>                  
                   <div className={"CardsMesasAlertZone"}>
                       Alert Zone
                   </div>
@@ -59,7 +61,7 @@ const TablesIndex = () => {
                   </Grid>
                   <span className={"CardsMesasTitle"}>MESA</span>
                   <span className={"CardsMesasValue"}>07</span>
-                  <span className={"AttendedByNoOne"}>Sem garçom definido</span>
+                  <span className={"AttendedBy"}>Mesa atendida por: <span className={"strong"}>José</span></span>
                     <a href="">
                       <div className={"CardsMesasAlertZone AlertZoneRequestTheBill"}>                        
                         <Icon icon="notification_important" />

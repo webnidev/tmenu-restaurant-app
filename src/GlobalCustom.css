@@ -7,6 +7,8 @@
     display: initial;
 }
 
+
+
 .PageTitle h1 span {
     font-weight: bold;
     font-size: 1.2em;
@@ -26,6 +28,17 @@
     background: white !important;
     margin-right: 10px;
     max-height: 51px;
+    min-height: 51px;
+    margin-top: 1%;
+}
+
+div.CustomContainer.mdc-layout-grid div.mdc-layout-grid__inner {
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+:root {
+    --mdc-theme-primary: #000000;
 }
 
 .mdc-data-table {
@@ -33,12 +46,14 @@
 }
 
 .BtnDefaultTmenu {
-    background: black !important;
-    color: white !important;
-    padding: 2.5% 2% !important;
+    background: #000!important;
+    color: #fff!important;
+    padding: 0px 10px!important;
     margin-right: 8px;
     border-radius: 8px;
     max-height: 51px;
+    min-height: 51px !important;
+    margin-top: 1% !important;
 }
 
 .TmenuSuccess {
@@ -46,7 +61,7 @@
     color: white;
 }
 
-.TemnuSuccessText {
+.TmenuSuccessText {
     color: #4CAF50;
 }
 
@@ -68,12 +83,12 @@
     color: #ff9800;
 }
 
-.TemnuInProcess {
+.TmenuInProcess {
     background: #2196f3;
     color: white;
 }
 
-.TemnuInProcessText {
+.TmenuInProcessText {
     color: #2196f3;
 }
 
@@ -120,7 +135,7 @@ table.mdc-data-table__table a {
 
 .AttendedBy {
     font-style: italic;
-    color: #2196F3;
+    color: #737373;
     margin-top: 2%;
     font-weight: 400;
 }
@@ -143,34 +158,6 @@ li.mdc-ripple-upgraded.mdc-list-item strong {
 
 .mdc-card a {
     text-decoration: none !important;
-}
-
-.CardsMesasAlertZone * {
-    padding: 0 0.8%;
-}
-
-.CardsMesasAlertZone i {
-    line-height: 30px !important;
-}
-
-.CardsMesasAlertZone {
-    background: #ccc;
-    margin-top: 5%;
-    padding: 3% 1%;
-    display: flex;
-    justify-content: center;
-}
-
-a .CardsMesasAlertZone{
-    text-decoration: none !important;
-}
-
-.CardsMesas.mdc-layout-grid {
-    font-family: 'Roboto', Helvetica, Arial, sans-serif;
-}
-
-.CardsMesas .rmwc-badge {
-    font-weight: 400;
 }
 
 .mdc-menu.mdc-menu-surface.mdc-menu-surface--open i {

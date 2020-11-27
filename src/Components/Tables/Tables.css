@@ -1,0 +1,37 @@
+.CardsMesas .mdc-layout-grid__inner {
+    display: flex;
+    min-width: 310px;
+    justify-content: space-evenly;
+}
+
+.CardsMesasAlertZone * {
+    padding: 0 0.8%;
+}
+
+.CardsMesasAlertZone i {
+    line-height: 30px !important;
+}
+
+.CardsMesasAlertZone {
+    background: #ccc;
+    margin-top: 5%;
+    padding: 3% 1%;
+    display: flex;
+    justify-content: center;
+}
+
+a .CardsMesasAlertZone{
+    text-decoration: none !important;
+}
+
+.CardsMesas.mdc-layout-grid {
+    font-family: 'Roboto', Helvetica, Arial, sans-serif;
+}
+
+.CardsMesas .rmwc-badge {
+    font-weight: 300;
+    text-transform: initial;
+    letter-spacing: 1px;
+    font-size: 0.8em;
+    padding: 0px 10px;
+}

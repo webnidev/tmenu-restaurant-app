@@ -28,11 +28,10 @@ const MenuIndex = () => {
 
   const [open, setOpen] = React.useState(false);
 
-
   return (
-    <>    
+    <>
           
-     <div className={"PageContainer"}>
+          <div className={"PageContainer"}>
           <div className={"PageTitle"}>        
             <h1><Typography use="headline1">Cardápio</Typography></h1>             
           </div>

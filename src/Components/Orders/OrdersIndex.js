@@ -109,9 +109,9 @@ const OrdersIndex = () => {
                               <Badge className={"TmenuSuccess"} align="inline" label="Finalizado" />                                                                            
                         </DataTableCell>
                         <SimpleMenu handle={<IconButton icon="keyboard_arrow_down" label="Aterar status" />}>
-                                <MenuItem>Atualizar para:  <strong> Finalizado</strong></MenuItem>
-                                <MenuItem>Atualizar para:  <strong> Cancelado</strong></MenuItem>
-                                <MenuItem>Atualizar para:  <strong> Em Andamento</strong></MenuItem>
+                                <MenuItem>Atualizar para:  <strong className="TmenuSuccessText"> Finalizado</strong></MenuItem>
+                                <MenuItem>Atualizar para:  <strong className="TmenuDangerText"> Cancelado</strong></MenuItem>
+                                <MenuItem>Atualizar para:  <strong className="TmenuInProcessText"> Em Andamento</strong></MenuItem>
                         </SimpleMenu>  
                       </DataTableRow>
                       <DataTableRow>
@@ -125,9 +125,9 @@ const OrdersIndex = () => {
                           </SimpleMenu> 
                         <DataTableCell alignEnd><Badge className={"TmenuDanger"} align="inline" label="Cancelado" /></DataTableCell>
                         <SimpleMenu handle={<IconButton icon="keyboard_arrow_down" label="Aterar status" />}>
-                                <MenuItem>Atualizar para:  <strong> Finalizado</strong></MenuItem>
-                                <MenuItem>Atualizar para:  <strong> Cancelado</strong></MenuItem>
-                                <MenuItem>Atualizar para:  <strong> Em Andamento</strong></MenuItem>
+                                <MenuItem>Atualizar para:  <strong className="TmenuSuccessText"> Finalizado</strong></MenuItem>
+                                <MenuItem>Atualizar para:  <strong className="TmenuDangerText"> Cancelado</strong></MenuItem>
+                                <MenuItem>Atualizar para:  <strong className="TmenuInProcessText"> Em Andamento</strong></MenuItem>
                               </SimpleMenu>  
                       </DataTableRow>
                       <DataTableRow>
@@ -139,11 +139,11 @@ const OrdersIndex = () => {
                             <MenuItem><Icon icon={{ icon: 'info', size: 'small' }} /> Ver Detalhes</MenuItem>
                             <MenuItem><Icon icon={{ icon: 'print', size: 'small' }} /> Imprimir</MenuItem>
                           </SimpleMenu> 
-                        <DataTableCell alignEnd><Badge className={"TemnuInProcess"} align="inline" label="Em andamento" /></DataTableCell>
+                        <DataTableCell alignEnd><Badge className={"TmenuInProcess"} align="inline" label="Em andamento" /></DataTableCell>
                               <SimpleMenu handle={<IconButton icon="keyboard_arrow_down" label="Aterar status" />}>
-                                <MenuItem>Atualizar para:  <strong> Finalizado</strong></MenuItem>
-                                <MenuItem>Atualizar para:  <strong> Cancelado</strong></MenuItem>
-                                <MenuItem>Atualizar para:  <strong> Em Andamento</strong></MenuItem>
+                                <MenuItem>Atualizar para:  <strong className="TmenuSuccessText"> Finalizado</strong></MenuItem>
+                                <MenuItem>Atualizar para:  <strong className="TmenuDangerText"> Cancelado</strong></MenuItem>
+                                <MenuItem>Atualizar para:  <strong className="TmenuInProcessText"> Em Andamento</strong></MenuItem>
                               </SimpleMenu>  
                       </DataTableRow>                      
                     </DataTableBody>
