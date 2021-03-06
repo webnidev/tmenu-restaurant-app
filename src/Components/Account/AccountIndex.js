@@ -7,7 +7,7 @@ const AccountIndex = () => {
     <>        
      <div className={"PageContainer"}>
           <div className={"PageTitle"}>        
-            <h1><Typography use="headline1">Minha Conta</Typography></h1>             
+            <h1><Typography use="headline1">Meu Perfil</Typography></h1>             
           </div>
             <Grid>
                            

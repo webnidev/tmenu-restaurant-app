@@ -101,7 +101,7 @@ const OrdersIndex = () => {
                         <DataTableCell alignEnd>02/10/2020 às 21:54</DataTableCell>
                         <DataTableCell alignEnd>0983</DataTableCell>
                         <DataTableCell alignEnd className={"strong"}>R$ 390</DataTableCell>
-                        <SimpleMenu handle={<IconButton icon="zoom_in"/>}>
+                          <SimpleMenu handle={<IconButton icon="zoom_in"/>}>
                             <MenuItem><Icon icon={{ icon: 'info', size: 'small' }} /> Ver Detalhes</MenuItem>                            
                             <MenuItem><Icon icon={{ icon: 'print', size: 'small' }} /> Imprimir</MenuItem>
                           </SimpleMenu>

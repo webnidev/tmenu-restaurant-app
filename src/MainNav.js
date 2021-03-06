@@ -10,6 +10,7 @@ import {
   List,
   ListItem,
   ListItemGraphic,
+  Badge,
 } from "rmwc";
 
 import "rmwc/dist/styles";
@@ -27,8 +28,13 @@ import SettingsIndex from "./Components/Settings/SettingsIndex";
 import PrintersIndex from "./Components/Printers/PrintersIndex";
 
 const MainNav = () => {
+
+  //const [billingNotify, setBillingNotify] = React.useState("");
+
   return (
     <>
+
+    
       <BrowserRouter>
         <Drawer>
           <DrawerHeader>
@@ -48,13 +54,13 @@ const MainNav = () => {
                 <ListItemGraphic icon="list" /> Pedidos
               </ListItem>
               <ListItem tag={Link} to="/mesas">
-                <ListItemGraphic icon="view_comfy" /> Mesas
+                <ListItemGraphic icon="view_comfy" /> Mesas <Badge align="inline" label={3} style={{ background: '#2196f3' }} />
               </ListItem>
               <ListItem tag={Link} to="/clientes">
                 <ListItemGraphic icon="supervisor_account" /> Clientes
               </ListItem>
               <ListItem tag={Link} to="/minhas-faturas">
-                <ListItemGraphic icon="attach_money" /> Minhas Faturas
+                <ListItemGraphic icon="attach_money" /> Minhas Faturas <Badge align="inline" label={2} />
               </ListItem>
               <ListItem tag={Link} to="/usuarios">
                 <ListItemGraphic icon="supervised_user_circle" /> Usuários do
@@ -70,8 +76,8 @@ const MainNav = () => {
               <ListItem tag={Link} to="/impressoras">
                 <ListItemGraphic icon="local_printshop" /> Impressoras
               </ListItem>
-              <ListItem tag={Link} to="/meus-dados">
-                <ListItemGraphic icon="insert_drive_file" /> Meus Dados
+              <ListItem tag={Link} to="/meu-perfil">
+                <ListItemGraphic icon="insert_drive_file" /> Meu Perfil
               </ListItem>
               <hr className={"Divider"} />              
               <ListItem tag={Link} to="/logout">
@@ -92,7 +98,7 @@ const MainNav = () => {
           <Route path="/relatorios" element={<ReportsIndex />} />          
           <Route path="/configuracoes" element={<SettingsIndex />} />
           <Route path="/impressoras" element={<PrintersIndex />} />
-          <Route path="/meus-dados" element={<AccountIndex />} />
+          <Route path="/meu-perfil" element={<AccountIndex />} />
         </Routes>
       </BrowserRouter>
     </>

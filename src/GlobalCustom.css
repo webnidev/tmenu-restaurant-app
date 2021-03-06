@@ -8,6 +8,12 @@
 }
 
 
+table .rmwc-badge {
+    text-transform: capitalize;
+    padding: 0 10px;
+    min-width: 100px;
+}
+
 
 .PageTitle h1 span {
     font-weight: bold;
@@ -149,11 +155,6 @@ li.mdc-ripple-upgraded.mdc-list-item strong {
     color: red;
     margin-top: 2%;
     font-weight: 400;
-}
-
-.AlertZoneRequestTheBill {
-    background: #FF4444 !important;
-    color: white;
 }
 
 .mdc-card a {

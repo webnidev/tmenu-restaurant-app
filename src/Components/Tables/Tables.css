@@ -12,6 +12,25 @@
     line-height: 30px !important;
 }
 
+.AlertZoneRequestTheBill {
+    background: #FF4444 !important;
+    color: white !important;
+}
+
+.AlertZoneRequestNewOrder {
+    background: #292929 !important;
+    color: #ffeb3b !important;
+}
+.AlertZoneRequestNewOrder .rmwc-badge {
+    background: #505050 !important;
+    color: #fdea3c !important;
+}
+
+
+.CardsMesas .mdc-menu.mdc-menu-surface {
+    width: 175px;
+}
+
 .CardsMesasAlertZone {
     background: #ccc;
     margin-top: 5%;
@@ -22,6 +41,9 @@
 
 a .CardsMesasAlertZone{
     text-decoration: none !important;
+    height: 20px;
+    align-items: center;
+    color: #333;
 }
 
 .CardsMesas.mdc-layout-grid {
