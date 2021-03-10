@@ -59,7 +59,7 @@ const OrdersIndex = () => {
           <Grid className={"CustomContainer"}>
             <GridRow>
                     <GridCell span={8}>
-                      <Button onClick={() => setOpen(true)} className={"BtnDefaultTmenu"} label="Novo pedido" icon="add" />
+                      <Button className={"BtnDefaultTmenu"} label="Novo pedido" icon="add" />
                       <SimpleMenu handle={<Button className={"BtnDefaultTmenu"} label="Filtrar por Mesa" icon="filter_list" />}>
                         <MenuItem>Mesa 1</MenuItem>
                         <MenuItem>Mesa 5</MenuItem>
