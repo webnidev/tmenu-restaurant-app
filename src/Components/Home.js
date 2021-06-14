@@ -1,10 +1,12 @@
 import React from "react";
 import { Grid, GridCell, Card, Typography, Icon } from "rmwc";
+import MainNav from "../MainNav";
 
 
 const Home = () => {
   return (
-    <>           
+    <>      
+    <MainNav/>     
      <div className={"PageContainer"}>
           <div className={"PageTitle"}>        
             <h1><Typography use="headline1">PAINEL</Typography></h1>             

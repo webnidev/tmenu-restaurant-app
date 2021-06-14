@@ -16,6 +16,7 @@ import { Grid, GridCell, GridRow,
   Button
 
 } from "rmwc";
+import MainNav from "../../MainNav";
 
 import './Invoices.css';
 
@@ -26,6 +27,7 @@ const InvoicesIndex = () => {
 
   return (
     <>          
+    <MainNav/>
      <div className={"PageContainer"}>
           <div className={"PageTitle"}>        
             <h1><Typography use="headline1">Minhas Faturas</Typography></h1>             

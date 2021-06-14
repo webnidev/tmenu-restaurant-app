@@ -1,12 +1,46 @@
 import React from "react";
 import MainNav from "./MainNav";
-
+import { Link, BrowserRouter, Routes, Route } from "react-router-dom";
+import  ProtectedRoute  from './Helper/ProtectedRoute'
+import RedirectToHome from './Helper/RedirectToHome'
+import Home from "./Components/Home";
+import MenuIndex from "./Components/Menu/MenuIndex";
+import AccountIndex from "./Components/Account/AccountIndex";
+import CustomersIndex from "./Components/Customers/CustomersIndex";
+import InvoicesIndex from "./Components/Invoices/InvoicesIndex";
+import OrdersIndex from "./Components/Orders/OrdersIndex";
+import TablesIndex from "./Components/Tables/TablesIndex";
+import UsersIndex from "./Components/Users/UsersIndex";
+import ReportsIndex from "./Components/Reports/ReportsIndex";
+import SettingsIndex from "./Components/Settings/SettingsIndex";
+import PrintersIndex from "./Components/Printers/PrintersIndex";
+import Login from "./Components/Auth/Login"
+import { UserStorage } from './UserContext';
 const App = () => {
   return (
-    <>            
+    <>          
+    <BrowserRouter>  
       <div className={"MainContainer"}>
-        <MainNav />
-      </div>      
+      
+        <UserStorage>
+        <Routes>
+          <RedirectToHome path="/login" element={<Login />} />
+          <ProtectedRoute path="/" element={<Home />} end />
+          <ProtectedRoute path="/cardapio" element={<MenuIndex />} />
+          <ProtectedRoute path="/pedidos" element={<OrdersIndex />} />
+          <ProtectedRoute path="/mesas" element={<TablesIndex />} />
+          <ProtectedRoute path="/clientes" element={<CustomersIndex />} />
+          <ProtectedRoute path="/minhas-faturas" element={<InvoicesIndex />} />
+          <ProtectedRoute path="/usuarios" element={<UsersIndex />} />
+          <ProtectedRoute path="/relatorios" element={<ReportsIndex />} />          
+          <ProtectedRoute path="/configuracoes" element={<SettingsIndex />} />
+          <ProtectedRoute path="/impressoras" element={<PrintersIndex />} />
+          <ProtectedRoute path="/meu-perfil" element={<AccountIndex />} />
+        </Routes>
+         </UserStorage>
+      
+      </div>    
+      </BrowserRouter>  
     </>
   );
 };

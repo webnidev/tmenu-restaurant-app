@@ -11,6 +11,7 @@ import { Grid,
   IconButton,
   MenuItem
  } from "rmwc";
+import MainNav from "../../MainNav";
 
   import "./Tables.css";
 
@@ -18,6 +19,7 @@ import { Grid,
 const TablesIndex = () => {
   return (
     <>          
+    <MainNav/>
      <div className={"PageContainer"}>
           <div className={"PageTitle"}>        
             <h1><Typography use="headline1">Mesas</Typography></h1>             

@@ -23,6 +23,7 @@ import { Grid, GridCell, GridRow,
   Icon
 
 } from "rmwc";
+import MainNav from "../../MainNav";
 
 const MenuIndex = () => {
 
@@ -30,7 +31,7 @@ const MenuIndex = () => {
 
   return (
     <>
-          
+          <MainNav />
           <div className={"PageContainer"}>
           <div className={"PageTitle"}>        
             <h1><Typography use="headline1">Cardápio</Typography></h1>             
