@@ -24,10 +24,85 @@ import { Grid, GridCell, GridRow,
 
 } from "rmwc";
 import MainNav from "../../MainNav";
-
+import {GET_PRODUCTS} from '../../Api'
+import Pagination from '../Pagination/Pagination'
+import CategoryList from "../Category/CategoryList";
 const MenuIndex = () => {
-
   const [open, setOpen] = React.useState(false);
+  const [data, setData] = React.useState([])
+  const [paginate, setPaginate] = React.useState({total:0, perPage:2, page:1, lastpage:0})
+  const [loaded, setLoaded] = React.useState(true)
+
+  const getData = async ()=>{
+    try {
+      const token = window.localStorage.getItem('token')
+      if(!token) throw new Error('Token inválido')
+      const {url, options} = GET_PRODUCTS(token, paginate)
+      const response = await fetch(url, options)
+      if(!response.ok) throw new Error(`Error: ${response.statusText}`)
+      const {products} = await response.json()
+      setData(products.data)
+      setPaginate({total:products.total, perPage:products.perPage, page:products.page, lastpage:products.lastPage})
+    } catch (error) {
+      console.log(error)
+    }
+    finally{
+      setLoaded(false)
+    }
+  }
+
+  const handleSubimit = async event =>{
+    event.preventDefault()
+    const search = `${event.target.name.value}`
+    const token = window.localStorage.getItem('token')
+    const {url, options} = GET_PRODUCTS(token, paginate, search)
+    const response = await fetch(url, options)
+    if(!response.ok) throw new Error(`Error: ${response.statusText}`)
+    const {products} = await response.json()
+    setData(products.data)
+    setPaginate({total:products.total, perPage:products.perPage, page:products.page, lastpage:products.lastPage})
+  }
+
+  const handleSearchToStatus = async event =>{
+    event.preventDefault()
+    try {
+      const status = ["ATIVO", "FORA DE ESTOQUE", "INATIVO"]
+      const token = window.localStorage.getItem('token')
+      if(!token) throw new Error(`Error: Token Inválido!`)
+      const search = `&status=${status[event.target.value]}`
+      const {url, options} = GET_PRODUCTS(token, paginate, search)
+      const response = await fetch(url, options)
+      if(!response.ok) throw new Error(`Error: ${response.statusText}`)
+      const {products} = await response.json()
+      setData(products.data)
+      setPaginate({total:products.total, perPage:products.perPage, page:products.page, lastpage:products.lastPage})
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const paginateUpdate =async event =>{
+    try {
+        const token = window.localStorage.getItem('token')
+        paginate.page=event.target.id
+        setPaginate(paginate)
+        if(!token){
+            throw new Error(`Error: Token inválido`)
+        }
+        const {url, options} = GET_PRODUCTS(token, paginate)
+        const response = await fetch(url, options)
+        if(!response.ok) throw new Error(`Error: ${response.statusText}`)
+        const {products} = await response.json()
+        setData(products.data)
+        
+    } catch (error) {
+        console.log(error)
+    }
+  }
+
+  React.useEffect(()=>{
+    getData()
+  },[])
 
   return (
     <>
@@ -62,22 +137,22 @@ const MenuIndex = () => {
             <Grid className={"CustomContainer"}>
             <GridRow>
                     <GridCell span={8}>
-                      <Button className={"BtnDefaultTmenu"} label="Cadastrar Item" icon="add" />
+                      <Button className={"BtnDefaultTmenu"} label="Cadastrar Item" icon="add" onClick={()=>setOpen(true)} />
                       <SimpleMenu handle={<Button className={"BtnDefaultTmenu"} label="Filtrar por Categoria" icon="filter_list" />}>
-                        <MenuItem>Carnes</MenuItem>
-                        <MenuItem>Bebidas</MenuItem>
-                        <MenuItem>Pizzas</MenuItem>
+                        <CategoryList/>
                       </SimpleMenu>
                       <SimpleMenu handle={<Button className={"BtnDefaultTmenu"} label="Filtrar por Status" icon="filter_list" />}>
-                        <MenuItem>Ativo</MenuItem>
-                        <MenuItem>Fora de Estoque</MenuItem>
-                        <MenuItem>Desativado</MenuItem>
+                        <MenuItem  value="0" onClick={handleSearchToStatus}>Ativo</MenuItem>
+                        <MenuItem  value="1" onClick={handleSearchToStatus}>Fora de Estoque</MenuItem>
+                        <MenuItem  value="2" onClick={handleSearchToStatus}>Desativado</MenuItem>
                       </SimpleMenu>          
                       
                     </GridCell>                    
-                    <GridCell span={4}>                      
-                        <TextField className={"CustomInputSearch"} outlined label="Buscar por Nome ou Código..." />
-                        <Button label="Pesquisar" outlined icon="search" className={"BtnDefaultSearch"}/>
+                    <GridCell span={4}>
+                        <form onSubmit={handleSubimit}>                      
+                        <TextField className={"CustomInputSearch"} name="name" outlined label="Buscar por Nome ou Código..." />
+                        <Button label="Pesquisar" outlined icon="search" className={"BtnDefaultSearch"} type="submit"/>
+                        </form>
                     </GridCell>
                 </GridRow>       
             </Grid>
@@ -96,54 +171,36 @@ const MenuIndex = () => {
                       </DataTableRow>
                     </DataTableHead>
                     <DataTableBody>
-                      <DataTableRow>
-                        <DataTableCell><a href="">Carne de Sol Nordestina</a></DataTableCell>
-                        <DataTableCell alignEnd>SKU0012</DataTableCell>
-                        <DataTableCell alignEnd className={"strong"}>R$ 59,00</DataTableCell>
-                          <SimpleMenu handle={<IconButton icon="zoom_in"/>}>
-                            <MenuItem><Icon icon={{ icon: 'info', size: 'small' }} /> Ver Detalhes</MenuItem>
-                            <MenuItem><Icon icon={{ icon: 'create', size: 'small' }} /> Editar</MenuItem>
-                            <MenuItem style={{color: '#b00020'}}><Icon icon={{ icon: 'delete', size: 'small' }} style={{color: '#b00020'}} /> Deletar</MenuItem>
-                          </SimpleMenu>
-                        <DataTableCell alignEnd><Badge className={"TmenuSuccess"} align="inline" label="Ativo" /></DataTableCell>
-                      </DataTableRow>
-                      <DataTableRow>
-                        <DataTableCell><a href="">Filé à Parmegiana</a></DataTableCell>
-                        <DataTableCell alignEnd>SKU0091</DataTableCell>
-                        <DataTableCell alignEnd className={"strong"}>R$ 64,00</DataTableCell>
-                        <SimpleMenu handle={<IconButton icon="zoom_in"/>}>
-                            <MenuItem><Icon icon={{ icon: 'info', size: 'small' }} /> Ver Detalhes</MenuItem>
-                            <MenuItem><Icon icon={{ icon: 'create', size: 'small' }} /> Editar</MenuItem>
-                            <MenuItem style={{color: '#b00020'}}><Icon icon={{ icon: 'delete', size: 'small' }} style={{color: '#b00020'}} /> Deletar</MenuItem>
-                          </SimpleMenu> 
-                        <DataTableCell alignEnd><Badge className={"TmenuDanger"} align="inline" label="Fora de Estoque" /></DataTableCell>
-                      </DataTableRow>
-                      <DataTableRow>
-                        <DataTableCell><a href="">Filé Mignon</a></DataTableCell>
-                        <DataTableCell alignEnd>SKU092</DataTableCell>
-                        <DataTableCell alignEnd className={"strong"}>R$ 78,00</DataTableCell>
-                        <SimpleMenu handle={<IconButton icon="zoom_in"/>}>
-                            <MenuItem><Icon icon={{ icon: 'info', size: 'small' }} /> Ver Detalhes</MenuItem>
-                            <MenuItem><Icon icon={{ icon: 'create', size: 'small' }} /> Editar</MenuItem>
-                            <MenuItem style={{color: '#b00020'}}><Icon icon={{ icon: 'delete', size: 'small' }} style={{color: '#b00020'}} /> Deletar</MenuItem>
-                          </SimpleMenu> 
-                        <DataTableCell alignEnd><Badge className={"TmenuDisabled"} align="inline" label="Desativado" /></DataTableCell>
-                      </DataTableRow>
-                      <DataTableRow>
-                        <DataTableCell><a href="">Heineken Longneck</a></DataTableCell>
-                        <DataTableCell alignEnd>SKU123</DataTableCell>
-                        <DataTableCell alignEnd className={"strong"}>R$ 7,50</DataTableCell>
-                          <SimpleMenu handle={<IconButton icon="zoom_in"/>}>
-                            <MenuItem><Icon icon={{ icon: 'info', size: 'small' }} /> Ver Detalhes</MenuItem>
-                            <MenuItem><Icon icon={{ icon: 'create', size: 'small' }} /> Editar</MenuItem>
-                            <MenuItem style={{color: '#b00020'}}><Icon icon={{ icon: 'delete', size: 'small' }} style={{color: '#b00020'}} /> Deletar</MenuItem>
-                          </SimpleMenu>                        
-                        <DataTableCell alignEnd><Badge className={"TmenuSuccess"} align="inline" label="Ativo" /></DataTableCell>
-                      </DataTableRow>
+                     
+                        { data.map( product =>{
+                          return(
+                            <DataTableRow key={product.id} >
+                             <DataTableCell><a href="">{product.name}</a></DataTableCell>
+                              <DataTableCell alignEnd>{product.code}</DataTableCell>
+                              <DataTableCell alignEnd className={"strong"}>R$ {product.value}</DataTableCell>
+                                <SimpleMenu handle={<IconButton icon="zoom_in"/>}>
+                                  <MenuItem><Icon icon={{ icon: 'info', size: 'small' }} /> Ver Detalhes</MenuItem>
+                                  <MenuItem><Icon icon={{ icon: 'create', size: 'small' }} /> Editar</MenuItem>
+                                  <MenuItem style={{color: '#b00020'}}><Icon icon={{ icon: 'delete', size: 'small' }} style={{color: '#b00020'}} /> Deletar</MenuItem>
+                                </SimpleMenu>
+
+                              { product.status === 'ATIVO' && <DataTableCell alignEnd><Badge className={"TmenuSuccess"} align="inline" label="Ativo" /></DataTableCell>}
+                              { product.status === 'FORA DE ESTOQUE' && <DataTableCell alignEnd><Badge className={"TmenuDanger"} align="inline" label="Fora de Estoque" /></DataTableCell>}
+                              { product.status === 'INATIVO' && <DataTableCell alignEnd><Badge className={"TmenuDisabled"} align="inline" label="Desativado" /></DataTableCell>}
+                            
+                            </DataTableRow>
+                          )
+                        })
+                        }
+                        
+
                     </DataTableBody>
                   </DataTableContent>
                 </DataTable>
                 </GridCell>
+                </GridRow>
+                <GridRow>
+                  <Pagination paginate={paginate} paginateUpdate={paginateUpdate}/>
                 </GridRow>
             </Grid>
 

@@ -13,5 +13,32 @@ export function LOGIN(body) {
       },
     };
   }
+export function GET_USER(token, body){
+  return{
 
+  }
+}
+
+export function GET_PRODUCTS(token, paginate, search=null){
+  const namex = /[a-zA-z]+/g
+  let url = `${API_URL}manager/product?page=${paginate.page}&limit=${paginate.perPage}`
+  if(search){
+    if(search.match(namex)){
+      url+=`&name=${search}`
+    }else{
+      url+=`&code=${search}`
+    }
+  }
+  return{
+    url: url,
+   options:{
+    method:'GET',
+    headers:{
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`
+    }
+    },
+    body:''
+  }
+}
   

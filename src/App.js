@@ -15,6 +15,7 @@ import ReportsIndex from "./Components/Reports/ReportsIndex";
 import SettingsIndex from "./Components/Settings/SettingsIndex";
 import PrintersIndex from "./Components/Printers/PrintersIndex";
 import Login from "./Components/Auth/Login"
+import Logout from "./Components/Logout/Logout"
 import { UserStorage } from './UserContext';
 const App = () => {
   return (
@@ -36,6 +37,7 @@ const App = () => {
           <ProtectedRoute path="/configuracoes" element={<SettingsIndex />} />
           <ProtectedRoute path="/impressoras" element={<PrintersIndex />} />
           <ProtectedRoute path="/meu-perfil" element={<AccountIndex />} />
+          <ProtectedRoute path="/logout" element={<Logout />} />
         </Routes>
          </UserStorage>
       

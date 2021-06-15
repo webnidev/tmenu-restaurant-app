@@ -1,0 +1,33 @@
+                      <DataTableRow>
+                        <DataTableCell><a href="">Filé à Parmegiana</a></DataTableCell>
+                        <DataTableCell alignEnd>SKU0091</DataTableCell>
+                        <DataTableCell alignEnd className={"strong"}>R$ 64,00</DataTableCell>
+                        <SimpleMenu handle={<IconButton icon="zoom_in"/>}>
+                            <MenuItem><Icon icon={{ icon: 'info', size: 'small' }} /> Ver Detalhes</MenuItem>
+                            <MenuItem><Icon icon={{ icon: 'create', size: 'small' }} /> Editar</MenuItem>
+                            <MenuItem style={{color: '#b00020'}}><Icon icon={{ icon: 'delete', size: 'small' }} style={{color: '#b00020'}} /> Deletar</MenuItem>
+                          </SimpleMenu> 
+                        <DataTableCell alignEnd><Badge className={"TmenuDanger"} align="inline" label="Fora de Estoque" /></DataTableCell>
+                      </DataTableRow>
+                      <DataTableRow>
+                        <DataTableCell><a href="">Filé Mignon</a></DataTableCell>
+                        <DataTableCell alignEnd>SKU092</DataTableCell>
+                        <DataTableCell alignEnd className={"strong"}>R$ 78,00</DataTableCell>
+                        <SimpleMenu handle={<IconButton icon="zoom_in"/>}>
+                            <MenuItem><Icon icon={{ icon: 'info', size: 'small' }} /> Ver Detalhes</MenuItem>
+                            <MenuItem><Icon icon={{ icon: 'create', size: 'small' }} /> Editar</MenuItem>
+                            <MenuItem style={{color: '#b00020'}}><Icon icon={{ icon: 'delete', size: 'small' }} style={{color: '#b00020'}} /> Deletar</MenuItem>
+                          </SimpleMenu> 
+                        <DataTableCell alignEnd><Badge className={"TmenuDisabled"} align="inline" label="Desativado" /></DataTableCell>
+                      </DataTableRow>
+                      <DataTableRow>
+                        <DataTableCell><a href="">Heineken Longneck</a></DataTableCell>
+                        <DataTableCell alignEnd>SKU123</DataTableCell>
+                        <DataTableCell alignEnd className={"strong"}>R$ 7,50</DataTableCell>
+                          <SimpleMenu handle={<IconButton icon="zoom_in"/>}>
+                            <MenuItem><Icon icon={{ icon: 'info', size: 'small' }} /> Ver Detalhes</MenuItem>
+                            <MenuItem><Icon icon={{ icon: 'create', size: 'small' }} /> Editar</MenuItem>
+                            <MenuItem style={{color: '#b00020'}}><Icon icon={{ icon: 'delete', size: 'small' }} style={{color: '#b00020'}} /> Deletar</MenuItem>
+                          </SimpleMenu>                        
+                        <DataTableCell alignEnd><Badge className={"TmenuSuccess"} align="inline" label="Ativo" /></DataTableCell>
+                      </DataTableRow>

@@ -287,3 +287,28 @@ h1, h2, h3, h4, h5, h6, p, span, a {
 .mdc-layout-grid {
     padding: 0;
 }
+
+.center{
+    text-align: center;
+  }
+  .pagination{
+    display: inline-block;
+  }
+  .pagination p {
+    color: black;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .pagination p.active{
+    background-color: black;
+    color: white;
+    border-radius:5px;
+  }
+  
+  .loading{
+    margin-left: 35rem;
+    margin-top: 13rem;
+  }
+  
