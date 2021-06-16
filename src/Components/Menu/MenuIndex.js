@@ -80,6 +80,18 @@ const MenuIndex = () => {
       console.log(error)
     }
   }
+  const handleSearchToCategory =async event =>{
+    event.preventDefault()
+    const token = window.localStorage.getItem('token')
+    if(!token) throw new Error(`Error: Token Inválido!`)
+    const search = event.target.id
+    const {url, options} = GET_PRODUCTS(token, paginate, search)
+    const response = await fetch(url, options)
+    if(!response.ok) throw new Error(`Error: ${response.statusText}`)
+    const {products} = await response.json()
+    setData(products.data)
+    setPaginate({total:products.total, perPage:products.perPage, page:products.page, lastpage:products.lastPage})
+  }
 
   const paginateUpdate =async event =>{
     try {
@@ -139,7 +151,7 @@ const MenuIndex = () => {
                     <GridCell span={8}>
                       <Button className={"BtnDefaultTmenu"} label="Cadastrar Item" icon="add" onClick={()=>setOpen(true)} />
                       <SimpleMenu handle={<Button className={"BtnDefaultTmenu"} label="Filtrar por Categoria" icon="filter_list" />}>
-                        <CategoryList/>
+                        <CategoryList data={data} handleSearchToCategory={handleSearchToCategory}/>
                       </SimpleMenu>
                       <SimpleMenu handle={<Button className={"BtnDefaultTmenu"} label="Filtrar por Status" icon="filter_list" />}>
                         <MenuItem  value="0" onClick={handleSearchToStatus}>Ativo</MenuItem>
