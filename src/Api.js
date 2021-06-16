@@ -32,6 +32,19 @@ export function GET_PRINTERS(token){
    }
  }
 }
+export function POST_PRINTER(token, body){
+  return{
+    url: API_URL+'manager/printer',
+    options:{
+      method: 'POST',
+        headers:{
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
+        body:JSON.stringify(body)
+    }
+  }
+}
 
 //PRODUCTS
 export function GET_PRODUCTS(token, paginate, search=null){
