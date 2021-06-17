@@ -312,3 +312,11 @@ h1, h2, h3, h4, h5, h6, p, span, a {
     margin-top: 13rem;
   }
   
+  .formContainer {
+    margin: 2%;
+    padding: 1% 2% 2% 2%;
+    border-radius: 5px;
+    width: 700px;
+    background: white;
+    max-width: 100%;
+  }

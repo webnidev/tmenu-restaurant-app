@@ -21,7 +21,6 @@ import { Grid, GridCell, GridRow,
   Badge,
   IconButton,
   Icon
-
 } from "rmwc";
 import MainNav from "../../MainNav";
 import {GET_PRODUCTS} from '../../Api'
@@ -112,6 +111,10 @@ const MenuIndex = () => {
     }
   }
 
+  function cadastrarNovo(){
+    window.location.href = "/add-product";
+  }
+
   React.useEffect(()=>{
     getData()
   },[])
@@ -149,7 +152,7 @@ const MenuIndex = () => {
             <Grid className={"CustomContainer"}>
             <GridRow>
                     <GridCell span={8}>
-                      <Button className={"BtnDefaultTmenu"} label="Cadastrar Item" icon="add" onClick={()=>setOpen(true)} />
+                      <Button className={"BtnDefaultTmenu"} label="Cadastrar Item" icon="add" onClick={()=>cadastrarNovo()} />
                       <SimpleMenu handle={<Button className={"BtnDefaultTmenu"} label="Filtrar por Categoria" icon="filter_list" />}>
                         <CategoryList data={data} handleSearchToCategory={handleSearchToCategory}/>
                       </SimpleMenu>

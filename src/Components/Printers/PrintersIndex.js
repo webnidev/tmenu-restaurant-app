@@ -17,7 +17,7 @@ import MainNav from "../../MainNav";
 
 const PrintersIndex = () => {
   const [data, setData] = React.useState([])
-  const [openform, setOpenform] = React.useState(true)
+  const [openform, setOpenform] = React.useState(false)
 
 
   const getData = async ()=>{

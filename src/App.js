@@ -5,6 +5,7 @@ import  ProtectedRoute  from './Helper/ProtectedRoute'
 import RedirectToHome from './Helper/RedirectToHome'
 import Home from "./Components/Home";
 import MenuIndex from "./Components/Menu/MenuIndex";
+import CreateItemMenu from "./Components/Menu/CreateItemMenu";
 import AccountIndex from "./Components/Account/AccountIndex";
 import CustomersIndex from "./Components/Customers/CustomersIndex";
 import InvoicesIndex from "./Components/Invoices/InvoicesIndex";
@@ -38,6 +39,7 @@ const App = () => {
           <ProtectedRoute path="/impressoras" element={<PrintersIndex />} />
           <ProtectedRoute path="/meu-perfil" element={<AccountIndex />} />
           <ProtectedRoute path="/logout" element={<Logout />} />
+          <ProtectedRoute path="/add-product" element={<CreateItemMenu/>} />
         </Routes>
          </UserStorage>
       
