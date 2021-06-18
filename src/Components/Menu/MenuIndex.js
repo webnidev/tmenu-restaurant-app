@@ -29,7 +29,7 @@ import CategoryList from "../Category/CategoryList";
 const MenuIndex = () => {
   const [open, setOpen] = React.useState(false);
   const [data, setData] = React.useState([])
-  const [paginate, setPaginate] = React.useState({total:0, perPage:2, page:1, lastpage:0})
+  const [paginate, setPaginate] = React.useState({total:0, perPage:5, page:1, lastpage:0})
   const [loaded, setLoaded] = React.useState(true)
 
   const getData = async ()=>{
@@ -126,29 +126,6 @@ const MenuIndex = () => {
           <div className={"PageTitle"}>        
             <h1><Typography use="headline1">Cardápio</Typography></h1>             
           </div>
-            
-
-          <Dialog open={open} onClose={evt => {
-            console.log(evt.detail.action);
-            setOpen(false);
-          }}
-        onClosed={evt => console.log(evt.detail.action)}>
-        <DialogTitle>Cadastrar novo item no cardápio</DialogTitle>
-        <DialogContent>
-           <TextField fullwidth placeholder="Nome ou título do produto" />
-           <TextField textarea fullwidth placeholder="Resumo ou descrição" />
-           <Select label="Selecione a categoria" options={['Carnes', 'Bebidas', 'Pizzas']}/>
-           <TextField fullwidth placeholder="Preço"/>
-        </DialogContent>
-        <DialogActions>
-          <DialogButton className={"BtnSecondaryAction"} action="close">Cancelar</DialogButton>
-          <DialogButton className={"BtnDefaultTmenu"} action="accept" isDefaultAction>
-            Salvar!
-          </DialogButton>
-        </DialogActions>
-      </Dialog>
-
-
             <Grid className={"CustomContainer"}>
             <GridRow>
                     <GridCell span={8}>
@@ -190,7 +167,7 @@ const MenuIndex = () => {
                         { data.map( product =>{
                           return(
                             <DataTableRow key={product.id} >
-                             <DataTableCell><a href="">{product.name}</a></DataTableCell>
+                             <DataTableCell><a href={`/product/${product.id}`}>{product.name}</a></DataTableCell>
                               <DataTableCell alignEnd>{product.code}</DataTableCell>
                               <DataTableCell alignEnd className={"strong"}>R$ {product.value}</DataTableCell>
                                 <SimpleMenu handle={<IconButton icon="zoom_in"/>}>

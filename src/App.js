@@ -18,6 +18,7 @@ import PrintersIndex from "./Components/Printers/PrintersIndex";
 import Login from "./Components/Auth/Login"
 import Logout from "./Components/Logout/Logout"
 import { UserStorage } from './UserContext';
+import Product from "./Components/Menu/Product";
 const App = () => {
   return (
     <>          
@@ -40,6 +41,7 @@ const App = () => {
           <ProtectedRoute path="/meu-perfil" element={<AccountIndex />} />
           <ProtectedRoute path="/logout" element={<Logout />} />
           <ProtectedRoute path="/add-product" element={<CreateItemMenu/>} />
+          <ProtectedRoute path="/product/:id" element={<Product/>}/>
         </Routes>
          </UserStorage>
       

@@ -93,6 +93,19 @@ export function POST_PRODUCT(token, body){
   }
 }
 
+export function GET_PRODUCT(token, id){
+  return{
+    url:`${API_URL}manager/product/${id}`,
+    options:{
+      method:'GET',
+      headers:{
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      }
+    }
+  }
+}
+
 //CATEGORIES
 export function GET_CATEGORIES(token, paginate, search=null){
   const namex = /[a-zA-z]+/g

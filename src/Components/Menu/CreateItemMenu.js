@@ -57,8 +57,6 @@ const CreateMenuItem =()=>{
             console.log(error)
         }
     }
-    
-   
 
     const handleSubimit = async  event=>{
         event.preventDefault()
@@ -78,7 +76,7 @@ const CreateMenuItem =()=>{
            const response = await fetch(url, options)
            if(!response.ok) throw new Error(`Error: ${response.statusText}`)
            
-           alert('Produto cadastrado com sucesso!')
+           window.location.href = "/cardapio";
        } catch (error) {
            console.log(error)
        }
@@ -134,8 +132,10 @@ const CreateMenuItem =()=>{
                             </GridRow>
                             <br/>
                             <GridRow>
+                            <GridCell span={9}>
                                 
-                            <GridCell span={5}>
+                            </GridCell>               
+                            <GridCell span={3}>
                                 <Button label="Cadastrar" outlined icon="add" className={"BtnDefaultSearch"} type="submit"/>
                                 </GridCell>
                             </GridRow>
