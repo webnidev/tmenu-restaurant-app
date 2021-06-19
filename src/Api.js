@@ -105,6 +105,21 @@ export function GET_PRODUCT(token, id){
     }
   }
 }
+//ATTRIBUTES
+
+export function GET_ATTRIBUTES(token){
+  return{
+    url:`${API_URL}manager/attribute`,
+    options:{
+      method:'GET',
+      headers:{
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      }
+    }  
+  }
+}
+
 
 //CATEGORIES
 export function GET_CATEGORIES(token, paginate, search=null){
