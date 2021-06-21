@@ -36,22 +36,22 @@
 
 /////////////////////////////DIALOG///////////////////////////////////////////
 <Dialog open={open} onClose={evt => {
-            console.log(evt.detail.action);
-            setOpen(false);
-          }}
-        onClosed={evt => console.log(evt.detail.action)}>
-        <DialogTitle>Cadastrar novo item no cardápio</DialogTitle>
-        <DialogContent>
-           <TextField fullwidth placeholder="Nome ou título do produto" />
-           <TextField textarea fullwidth placeholder="Resumo ou descrição" />
-           <Select label="Selecione a categoria" options={['Carnes', 'Bebidas', 'Pizzas']}/>
-           <TextField fullwidth placeholder="Preço"/>
-        </DialogContent>
-        <DialogActions>
-          <DialogButton className={"BtnSecondaryAction"} action="close">Cancelar</DialogButton>
-          <DialogButton className={"BtnDefaultTmenu"} action="accept" isDefaultAction>
-            Salvar!
-          </DialogButton>
-        </DialogActions>
-      </Dialog>
+      console.log(evt.detail.action);
+      setOpen(false);
+    }}
+  onClosed={evt => console.log(evt.detail.action)}>
+  <DialogTitle>Cadastrar novo item no cardápio</DialogTitle>
+  <DialogContent>
+      <TextField fullwidth placeholder="Nome ou título do produto" />
+      <TextField textarea fullwidth placeholder="Resumo ou descrição" />
+      <Select label="Selecione a categoria" options={['Carnes', 'Bebidas', 'Pizzas']}/>
+      <TextField fullwidth placeholder="Preço"/>
+  </DialogContent>
+  <DialogActions>
+    <DialogButton className={"BtnSecondaryAction"} action="close">Cancelar</DialogButton>
+    <DialogButton className={"BtnDefaultTmenu"} action="accept" isDefaultAction>
+      Salvar!
+    </DialogButton>
+  </DialogActions>
+</Dialog>
 /////////////////////////////////////////////////////////////////////////////////////////

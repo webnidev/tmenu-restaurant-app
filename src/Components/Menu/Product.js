@@ -1,6 +1,6 @@
 import React from 'react'
 import { useHistory, useParams } from 'react-router-dom'
-import { GET_ATTRIBUTES, GET_PRODUCT } from '../../Api'
+import { GET_ATTRIBUTES, GET_PRODUCT, POST_ATTRIBUTE, PUT_PRODUCT_ATTRIBUTE,POST_ATTRIBUTE_VALUE } from '../../Api'
 import { Grid, GridCell, GridRow,
     Typography,
     Button,
@@ -26,11 +26,18 @@ import { Grid, GridCell, GridRow,
     Icon
   } from "rmwc";
   import MainNav from "../../MainNav";
+  import useForm from '../../Hooks/UseForm'
 const Product =()=>{
    const {id} = useParams()
    const [product, setProduct] = React.useState({})
    const [attributes, setAttributes] = React.useState([])
    const [formAttribute, setFormAttribute] = React.useState(false)
+   const [open, setOpen] = React.useState(false)
+   const [attributeid, setAttributeid] = React.useState(0)
+   const maxItem = useForm()
+   const additionalValue = useForm()
+   const valueName = useForm()
+   const valueDescription = useForm()
     const getData = async ()=>{
         try {
             const token = window.localStorage.getItem('token')
@@ -58,6 +65,80 @@ const Product =()=>{
             console.log(error)
         }
     }
+
+    const addAttribute = async event =>{
+        event.preventDefault()
+        try {
+            const body ={
+                title: event.target.title.value,
+                description: event.target.description.value,
+                max_item: event.target.max_item.value,
+                required: event.target.required.checked
+            }
+            const token = window.localStorage.getItem('token')
+            if(!token) throw new Error(`Error: Token inválido`)
+            const {url, options} = POST_ATTRIBUTE(token, body)
+            const response = await fetch(url, options)
+            if(!response.ok) throw new Error(`Error: ${response.statusText}`)
+            const {attribute} = await response.json()
+            if(attribute.id){
+                const valuesApi = PUT_PRODUCT_ATTRIBUTE(token, product.id, attribute.id)
+                const resp = await fetch(valuesApi.url, valuesApi.options)
+                if(!resp.ok) throw new Error(`Error: ${resp.statusText}`)
+                getAttributes()
+                getData()
+            } 
+
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const attributeToProduct = async event =>{
+        event.preventDefault()
+        try {
+            const token = window.localStorage.getItem('token')
+            if(!token) throw new Error(`Error: Token inválido`)
+            const {url, options} = PUT_PRODUCT_ATTRIBUTE(token, product.id, event.target.id)
+            const response = await fetch(url, options)
+            if(!response.ok) throw new Error(`Error: ${response.statusText}`)
+            getData()
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const addAttributeValue = async event =>{
+        event.preventDefault()
+        try {
+           const body={
+               name:event.target.name.value,
+               description: event.target.description.value,
+               additional_value: event.target.additional_value.value,
+               max_item: event.target.max_item.value,
+               attribute_id: attributeid
+           }
+           const token = window.localStorage.getItem('token')
+           if(!token) throw new Error(`Error: Token inválido`)
+           const {url, options} = POST_ATTRIBUTE_VALUE(token, body)
+           const response = await fetch(url, options)
+           if(!response.ok) throw new Error(`Error: ${response.statusText}`)
+           getData()
+           valueName.setValue('')
+           valueDescription.setValue('')
+           maxItem.setValue('')
+           additionalValue.setValue('')
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const openModalAddId = (event) =>{
+        event.preventDefault()
+        setOpen(true)
+        setAttributeid(event.target.id)
+    }
+
     React.useEffect(()=>{
         getData()
         getAttributes()
@@ -65,6 +146,27 @@ const Product =()=>{
     return(
         <>
             <MainNav />
+            <Dialog open={open} onClose={evt => {
+                console.log(evt.detail.action);
+                setOpen(false);
+                }}
+            onClosed={evt => console.log(evt.detail.action)}>
+            <DialogTitle>Cadastrar valor</DialogTitle>
+            <form onSubmit={addAttributeValue}>
+            <DialogContent>
+                <TextField fullwidth placeholder="Nome" name="name" {...valueName}/>
+                <TextField fullwidth placeholder="Descrição" name="description" {...valueDescription} />
+                <TextField fullwidth placeholder="Valor adicional" name="additional_value" {...additionalValue} />
+                <TextField fullwidth placeholder="Qantidade máxima permitida" name="max_item" {...maxItem} />
+            </DialogContent>
+            <DialogActions>
+                <DialogButton className={"BtnDefaultTmenu"} action="accept" isDefaultAction>
+                Salvar!
+                </DialogButton>
+            </DialogActions>
+            </form>
+            </Dialog>
+
             <div className={"PageContainer"}>
                 <div className={"PageTitle"}>        
                     <h1><Typography use="headline1">{product.name}</Typography></h1>             
@@ -113,7 +215,7 @@ const Product =()=>{
                             <MenuItem onClick={()=>setFormAttribute(!formAttribute)}>Cadastrar variação</MenuItem>
                             { attributes && attributes.map(attribute=>{
                                 return(
-                                    <MenuItem>{attribute.title}</MenuItem>
+                                    <MenuItem key={attribute.id} id={attribute.id} onClick={attributeToProduct}>{attribute.title}</MenuItem>
                                 )
                             })}
                         </SimpleMenu>}
@@ -121,7 +223,7 @@ const Product =()=>{
                         </GridRow>
                         {
                             formAttribute &&
-                            <form> 
+                            <form onSubmit={addAttribute}> 
                             <GridCell span={12}>
                                 <GridRow>
                                     <GridCell span={6}>
@@ -174,9 +276,8 @@ const Product =()=>{
                                             <DataTableCell >{attribute.max_item}</DataTableCell>
                                             
                                                 <SimpleMenu handle={<Button className={"BtnDefaultTmenu"} label="Valores" icon="filter_list" />}>
-                                                        <MenuItem>Adionar valor</MenuItem>
+                                                        <MenuItem onClick={openModalAddId} id={attribute.id}>Adionar valor</MenuItem>
                                                     {attribute.values.map(value =>{
-                                                        console.log(value)
                                                         return(
                                                             <MenuItem  value={value.id}>{value.name}</MenuItem>
                                                         )

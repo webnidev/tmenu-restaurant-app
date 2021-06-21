@@ -50,7 +50,7 @@ export function POST_PRINTER(token, body){
 export function GET_PRODUCTS(token, paginate, search=null){
   const namex = /[a-zA-z]+/g
   const categoryx = /\d+/g
-  const statusx = /\&status/g
+  const statusx = /&status/g
   let url = `${API_URL}manager/product?page=${paginate.page}&limit=${paginate.perPage}`
   if(search){
     if(search.match(statusx)){
@@ -93,6 +93,19 @@ export function POST_PRODUCT(token, body){
   }
 }
 
+export function PUT_PRODUCT_ATTRIBUTE(token, product_id, attribute_id){
+  return{
+    url:`${API_URL}manager/product/${product_id}/attribute/${attribute_id}`,
+    options:{
+      method:'PUT',
+      headers:{
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      }
+    }
+  }
+}
+
 export function GET_PRODUCT(token, id){
   return{
     url:`${API_URL}manager/product/${id}`,
@@ -120,6 +133,33 @@ export function GET_ATTRIBUTES(token){
   }
 }
 
+export function POST_ATTRIBUTE(token, body){
+  return{
+    url:`${API_URL}manager/attribute`,
+    options:{
+      method:'POST',
+      headers:{
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      }, 
+      body:JSON.stringify(body)
+    }  
+  }
+}
+
+export function POST_ATTRIBUTE_VALUE(token, body){
+  return{
+    url:`${API_URL}manager/value-attribute`,
+    options:{
+      method:'POST',
+      headers:{
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      }, 
+      body:JSON.stringify(body)
+    }  
+  }
+}
 
 //CATEGORIES
 export function GET_CATEGORIES(token, paginate, search=null){

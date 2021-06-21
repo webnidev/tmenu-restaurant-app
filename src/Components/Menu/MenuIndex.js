@@ -184,8 +184,6 @@ const MenuIndex = () => {
                           )
                         })
                         }
-                        
-
                     </DataTableBody>
                   </DataTableContent>
                 </DataTable>
