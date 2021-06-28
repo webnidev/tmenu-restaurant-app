@@ -12,11 +12,22 @@ import { Grid,
   MenuItem
  } from "rmwc";
 import MainNav from "../../MainNav";
-
-  import "./Tables.css";
-
+import "./Tables.css";
+import {API_URL} from '../../Api'
+import Ws from '@adonisjs/websocket-client'
 
 const TablesIndex = () => {
+  const ws = Ws('ws://api.tmenu.com.br/',{
+    path:'adonis-ws'
+  })
+  ws.connect()
+  ws.on('open',()=>{
+    console.log('Connection initialized')
+  })
+  ws.on('close', () => {
+    console.log('Connection closed')
+  })
+  //ws.subscribe('')
   return (
     <>          
     <MainNav/>
