@@ -181,3 +181,19 @@ export function GET_CATEGORIES(token, paginate, search=null){
     }
   }
 }
+
+
+//TABLES
+export function GET_TABLES(token, paginate){
+  let url = `${API_URL}manager/table?page=${paginate.page}&limit=${paginate.perPage}`
+  return{
+    url:url,
+    options:{
+      method: 'GET',
+      headers:{
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      }
+    }
+  }
+}

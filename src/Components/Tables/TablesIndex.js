@@ -13,34 +13,51 @@ import { Grid,
  } from "rmwc";
 import MainNav from "../../MainNav";
 import "./Tables.css";
-import {API_URL} from '../../Api'
+import {GET_TABLES} from '../../Api'
 import Ws from '@adonisjs/websocket-client'
 
 const TablesIndex = () => {
-  const ws = Ws('ws://api.tmenu.com.br/',{
-    path:'adonis-ws'
-  })
-  ws.connect()
-  ws.on('open',()=>{
-    console.log('Connection initialized')
-  })
-  ws.on('close', () => {
-    console.log('Connection closed')
-  })
-  //ws.subscribe('')
+  const [tables, setTables] = React.useState([])
+  const [paginate, setPaginate] = React.useState({total:0, perPage:5, page:1, lastpage:0})
+  const getTables = async ()=>{
+    try {
+      const token = window.localStorage.getItem('token')
+      const {url, options} = GET_TABLES(token, paginate)
+      const response = await fetch(url, options)
+      if(!response.ok) throw new Error(`Error: ${response.statusText}`)
+      const {tables} = await response.json()
+      setTables(tables.data)
+      setPaginate({total:tables.total, perPage:tables.perPage, page:tables.page, lastpage:tables.lastPage})
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  React.useEffect(()=>{
+    getTables()
+  },[])
+  
+
+
   return (
     <>          
     <MainNav/>
+    {console.log(tables)}
      <div className={"PageContainer"}>
           <div className={"PageTitle"}>        
             <h1><Typography use="headline1">Mesas</Typography></h1>             
           </div>
           <Grid className={"CardsMesas"} z={1}>
-              <GridCell span={3}>
+            {tables && tables.map(table=>{
+              return(
+                <GridCell span={3}>
                 <Card>
                   <Grid>  
                       <GridRow>
-                        <GridCell span={6}><Badge className={"TmenuSuccess"} align="inline" label="Em atendimento" /> </GridCell>
+                        <GridCell span={6}>
+                          { table.status && <Badge className={"TmenuSuccess"} align="inline" label="Em atendimento" />} 
+                          { !table.status && <Badge className={"TmenuDanger"} align="inline" label="Fechada" />} 
+                        </GridCell>
                         <GridCell span={8}>
                           <SimpleMenu handle={<Button style={{color: "black"}} label="Ações" icon="settings" />}>
                                   <MenuItem><Icon icon="add_circle_outline" /> Incluir Pedido</MenuItem>
@@ -54,95 +71,20 @@ const TablesIndex = () => {
                   </Grid>                  
                   
                   <span className={"CardsMesasTitle"}>MESA</span>
-                  <span className={"CardsMesasValue"}>12</span>
-                  <span className={"AttendedBy"}>Mesa atendida por: <span className={"strong"}>João</span></span>
+                  <span className={"CardsMesasValue"}>{table.number}</span>
+                  { table.waiter && <span className={"AttendedBy"}>Mesa atendida por: <span className={"strong"}>{table.waiter.name}</span></span>}
+                  { !table.waiter && <span className={"AttendedBy"}>Sem garçom definido</span>}
                   <a href="">
-                    <div className={"CardsMesasAlertZone"}>
+                    <div className={`CardsMesasAlertZone`}>
                         Nenhum novo pedido
                     </div>
                   </a>
                 </Card>
               </GridCell>
-              <GridCell span={3}>
-                <Card>
-                <Grid>  
-                      <GridRow>
-                        <GridCell span={6}><Badge className={"TmenuSuccess"} align="inline" label="Em atendimento" /> </GridCell>
-                        <GridCell span={8}>
-                          <SimpleMenu handle={<Button style={{color: "black"}} label="Ações" icon="settings" />}>
-                                  <MenuItem><Icon icon="add_circle_outline" /> Incluir Pedido</MenuItem>
-                                  <MenuItem><Icon icon="visibility" /> Ver Extrato</MenuItem>
-                                  <MenuItem><Icon icon="account_balance_wallet" /> Fechar Conta</MenuItem>
-                                  <MenuItem><Icon icon="add_to_queue" /> Abrir Mesa</MenuItem>
-                                  <MenuItem><Icon icon="switch_account" /> Definir Garçom</MenuItem>
-                          </SimpleMenu>
-                        </GridCell>
-                      </GridRow>
-                  </Grid>
-                  <span className={"CardsMesasTitle"}>MESA</span>
-                  <span className={"CardsMesasValue"}>09</span>
-                  <span className={"AttendedByNoOne"}>Sem garçom definido</span>
-                  <a href="">                  
-                      <div className={"CardsMesasAlertZone AlertZoneRequestNewOrder"}>                        
-                        <Badge align="inline" label={2} style={{ background: '#2196f3' }}/>
-                        <Typography use="overline" className={"strong"}> Novo(s) pedido(s)!</Typography>
-                      </div>
-                  </a>
-                </Card>
-              </GridCell>
-              <GridCell span={3}>
-                <Card>
-                <Grid>  
-                      <GridRow>
-                        <GridCell span={6}><Badge className={"TmenuSuccess"} align="inline" label="Em atendimento" /> </GridCell>
-                        <GridCell span={8}>
-                          <SimpleMenu handle={<Button style={{color: "black"}} label="Ações" icon="settings" />}>
-                                  <MenuItem><Icon icon="add_circle_outline" /> Incluir Pedido</MenuItem>
-                                  <MenuItem><Icon icon="visibility" /> Ver Extrato</MenuItem>
-                                  <MenuItem><Icon icon="account_balance_wallet" /> Fechar Conta</MenuItem>
-                                  <MenuItem><Icon icon="add_to_queue" /> Abrir Mesa</MenuItem>
-                                  <MenuItem><Icon icon="switch_account" /> Definir Garçom</MenuItem>
-                          </SimpleMenu>
-                        </GridCell>
-                      </GridRow>
-                  </Grid>
-                  <span className={"CardsMesasTitle"}>MESA</span>
-                  <span className={"CardsMesasValue"}>07</span>
-                  <span className={"AttendedBy"}>Mesa atendida por: <span className={"strong"}>José</span></span>
-                    <a href="">
-                      <div className={"CardsMesasAlertZone AlertZoneRequestTheBill"}>                        
-                        <Icon icon="notification_important" />
-                        <Typography use="overline" className={"strong"}> Pedindo a conta!</Typography>
-                      </div>
-                    </a>
-                </Card>
-              </GridCell>
-              <GridCell span={3}>
-                <Card>
-                <Grid>  
-                      <GridRow>
-                        <GridCell span={6}><Badge className={"TmenuSuccess"} align="inline" label="Em atendimento" /> </GridCell>
-                        <GridCell span={8}>
-                          <SimpleMenu handle={<Button style={{color: "black"}} label="Ações" icon="settings" />}>
-                                  <MenuItem><Icon icon="add_circle_outline" /> Incluir Pedido</MenuItem>
-                                  <MenuItem><Icon icon="visibility" /> Ver Extrato</MenuItem>
-                                  <MenuItem><Icon icon="account_balance_wallet" /> Fechar Conta</MenuItem>
-                                  <MenuItem><Icon icon="add_to_queue" /> Abrir Mesa</MenuItem>
-                                  <MenuItem><Icon icon="switch_account" /> Definir Garçom</MenuItem>
-                          </SimpleMenu>
-                        </GridCell>
-                      </GridRow>
-                  </Grid>
-                  <span className={"CardsMesasTitle"}>MESA</span>
-                  <span className={"CardsMesasValue"}>05</span>
-                  <span className={"AttendedBy"}>Mesa atendida por: <span className={"strong"}>João</span></span>
-                  <a href="">
-                    <div className={"CardsMesasAlertZone"}>
-                      Nenhum novo pedido
-                    </div>
-                  </a>
-                </Card>
-              </GridCell>                     
+              )
+            })
+              
+            } 
             </Grid> 
         </div>   
       

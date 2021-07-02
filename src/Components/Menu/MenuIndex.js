@@ -171,7 +171,7 @@ const MenuIndex = () => {
                               <DataTableCell alignEnd>{product.code}</DataTableCell>
                               <DataTableCell alignEnd className={"strong"}>R$ {product.value}</DataTableCell>
                                 <SimpleMenu handle={<IconButton icon="zoom_in"/>}>
-                                  <MenuItem><Icon icon={{ icon: 'info', size: 'small' }} /> Ver Detalhes</MenuItem>
+                                  <MenuItem><Icon icon={{ icon: 'info', size: 'small' }} /><a href={`/product/${product.id}`}>Ver Detalhes</a></MenuItem>
                                   <MenuItem><Icon icon={{ icon: 'create', size: 'small' }} /> Editar</MenuItem>
                                   <MenuItem style={{color: '#b00020'}}><Icon icon={{ icon: 'delete', size: 'small' }} style={{color: '#b00020'}} /> Deletar</MenuItem>
                                 </SimpleMenu>
