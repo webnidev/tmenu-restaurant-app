@@ -19,9 +19,12 @@ import Ws from '@adonisjs/websocket-client'
 const TablesIndex = () => {
   const [tables, setTables] = React.useState([])
   const [paginate, setPaginate] = React.useState({total:0, perPage:5, page:1, lastpage:0})
+  const token = window.localStorage.getItem('token') 
+  const ws = Ws('ws://localhost:3333/').withApiToken(token).connect()
+  const order = ws.subscribe('notifications')
+  
   const getTables = async ()=>{
-    try {
-      const token = window.localStorage.getItem('token')
+    try {     
       const {url, options} = GET_TABLES(token, paginate)
       const response = await fetch(url, options)
       if(!response.ok) throw new Error(`Error: ${response.statusText}`)
@@ -33,6 +36,10 @@ const TablesIndex = () => {
     }
   }
 
+  order.on('new:order', ()=>{
+    getTables()
+  })
+  
   React.useEffect(()=>{
     getTables()
   },[])

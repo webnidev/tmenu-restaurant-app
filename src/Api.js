@@ -1,5 +1,6 @@
 // AQUI DEVE SER PRÉ-CONFIGURADO TODOS OS TIPOS DE REQUISIÇÕES QUE A API TRABALHA 
-export const API_URL = 'https://api.tmenu.com.br/v1/';
+//export const API_URL = 'https://api.tmenu.com.br/v1/';
+export const API_URL = 'http://localhost:3333/v1/';
 //USERS
 export function LOGIN(body) {
     return {
