@@ -198,3 +198,19 @@ export function GET_TABLES(token, paginate){
     }
   }
 }
+
+
+
+//COMPANIES
+export function GET_COMPANY(token){
+  return{
+    url:API_URL+'manager/company',
+    options:{
+      method:'GET',
+      headers:{
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`  
+      }
+    }
+  }
+}

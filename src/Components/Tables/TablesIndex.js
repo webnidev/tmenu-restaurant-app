@@ -15,14 +15,18 @@ import MainNav from "../../MainNav";
 import "./Tables.css";
 import {GET_TABLES} from '../../Api'
 import Ws from '@adonisjs/websocket-client'
-
+import { CompanyContext } from '../../CompanyContext'
 const TablesIndex = () => {
+  const {data, setData, getData} = React.useContext(CompanyContext)
+  setData(getData())
+  //const url = 'wss://api.tmenu.com.br'
+  const url = 'ws://localhost:3333'
   const [tables, setTables] = React.useState([])
   const [paginate, setPaginate] = React.useState({total:0, perPage:5, page:1, lastpage:0})
   const token = window.localStorage.getItem('token') 
-  const ws = Ws('ws://localhost:3333/').withApiToken(token).connect()
+  const ws = Ws(url).withApiToken(token).connect()
   const order = ws.subscribe('notifications')
-  
+  console.log(data.waiters)
   const getTables = async ()=>{
     try {     
       const {url, options} = GET_TABLES(token, paginate)
@@ -36,6 +40,15 @@ const TablesIndex = () => {
     }
   }
 
+  const setWaiter = async event =>{
+    event.preventDefault()
+    try {
+      console.log(event.target)      
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   order.on('new:order', ()=>{
     getTables()
   })
@@ -44,8 +57,6 @@ const TablesIndex = () => {
     getTables()
   },[])
   
-
-
   return (
     <>          
     <MainNav/>
@@ -71,7 +82,7 @@ const TablesIndex = () => {
                                   <MenuItem><Icon icon="visibility" /> Ver Extrato</MenuItem>
                                   <MenuItem><Icon icon="account_balance_wallet" /> Fechar Conta</MenuItem>
                                   <MenuItem><Icon icon="add_to_queue" /> Abrir Mesa</MenuItem>
-                                  <MenuItem><Icon icon="switch_account" /> Definir Garçom</MenuItem>
+                                  <MenuItem><Icon icon="switch_account"  onClick={setWaiter}/> Definir Garçom</MenuItem>
                           </SimpleMenu>
                         </GridCell>
                       </GridRow>

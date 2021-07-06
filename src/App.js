@@ -18,33 +18,34 @@ import PrintersIndex from "./Components/Printers/PrintersIndex";
 import Login from "./Components/Auth/Login"
 import Logout from "./Components/Logout/Logout"
 import { UserStorage } from './UserContext';
+import {CompanyStorage} from './CompanyContext';
 import Product from "./Components/Menu/Product";
 const App = () => {
   return (
     <>          
     <BrowserRouter>  
       <div className={"MainContainer"}>
-      
-        <UserStorage>
-        <Routes>
-          <RedirectToHome path="/login" element={<Login />} />
-          <ProtectedRoute path="/" element={<Home />} end />
-          <ProtectedRoute path="/cardapio" element={<MenuIndex />} />
-          <ProtectedRoute path="/pedidos" element={<OrdersIndex />} />
-          <ProtectedRoute path="/mesas" element={<TablesIndex />} />
-          <ProtectedRoute path="/clientes" element={<CustomersIndex />} />
-          <ProtectedRoute path="/minhas-faturas" element={<InvoicesIndex />} />
-          <ProtectedRoute path="/usuarios" element={<UsersIndex />} />
-          <ProtectedRoute path="/relatorios" element={<ReportsIndex />} />          
-          <ProtectedRoute path="/configuracoes" element={<SettingsIndex />} />
-          <ProtectedRoute path="/impressoras" element={<PrintersIndex />} />
-          <ProtectedRoute path="/meu-perfil" element={<AccountIndex />} />
-          <ProtectedRoute path="/logout" element={<Logout />} />
-          <ProtectedRoute path="/add-product" element={<CreateItemMenu/>} />
-          <ProtectedRoute path="/product/:id" element={<Product/>}/>
-        </Routes>
-         </UserStorage>
-      
+        <CompanyStorage>
+          <UserStorage>
+            <Routes>
+              <RedirectToHome path="/login" element={<Login />} />
+              <ProtectedRoute path="/" element={<Home />} end />
+              <ProtectedRoute path="/cardapio" element={<MenuIndex />} />
+              <ProtectedRoute path="/pedidos" element={<OrdersIndex />} />
+              <ProtectedRoute path="/mesas" element={<TablesIndex />} />
+              <ProtectedRoute path="/clientes" element={<CustomersIndex />} />
+              <ProtectedRoute path="/minhas-faturas" element={<InvoicesIndex />} />
+              <ProtectedRoute path="/usuarios" element={<UsersIndex />} />
+              <ProtectedRoute path="/relatorios" element={<ReportsIndex />} />          
+              <ProtectedRoute path="/configuracoes" element={<SettingsIndex />} />
+              <ProtectedRoute path="/impressoras" element={<PrintersIndex />} />
+              <ProtectedRoute path="/meu-perfil" element={<AccountIndex />} />
+              <ProtectedRoute path="/logout" element={<Logout />} />
+              <ProtectedRoute path="/add-product" element={<CreateItemMenu/>} />
+              <ProtectedRoute path="/product/:id" element={<Product/>}/>
+            </Routes>
+          </UserStorage>
+         </CompanyStorage>
       </div>    
       </BrowserRouter>  
     </>
