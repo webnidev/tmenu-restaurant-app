@@ -19,6 +19,19 @@ export function GET_USER(token, body){
 
   }
 }
+
+export function GET_VALIDATE_TOKEN(token){
+return{
+  url:`${API_URL}auth/validate/manager`,
+  options:{
+    method:'GET',
+    headers:{
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`
+     }
+  }
+}
+}
 //PRINTERS
 export function GET_PRINTERS(token){
  let url = `${API_URL}manager/printer`

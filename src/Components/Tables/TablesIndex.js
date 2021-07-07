@@ -135,7 +135,7 @@ const setTable = (table_id) =>{
                                   <MenuItem><Icon icon="visibility" /> Ver Extrato</MenuItem>
                                   <MenuItem><Icon icon="account_balance_wallet" /> Fechar Conta</MenuItem>
                                   {!table.status && <MenuItem><Icon icon="add_to_queue" /> Abrir Mesa</MenuItem>}
-                                  <MenuItem onClick={()=>setTable(table.id)}><Icon icon="switch_account" /> Definir Garçom</MenuItem>
+                                  { table.status && <MenuItem onClick={()=>setTable(table.id)}><Icon icon="switch_account" /> Definir Garçom</MenuItem>}
                           </SimpleMenu>
                         </GridCell>
                       </GridRow>
@@ -145,11 +145,28 @@ const setTable = (table_id) =>{
                   <span className={"CardsMesasValue"}>{table.number}</span>
                   { table.waiter && <span className={"AttendedBy"}>Mesa atendida por: <span className={"strong"}>{table.waiter.name}</span></span>}
                   { !table.waiter && <span className={"AttendedBy"}>Sem garçom definido</span>}
-                  <a href="">
+                  { !table.asking && !table.calling &&<a href="">
                     <div className={`CardsMesasAlertZone`}>
                         Nenhum novo pedido
                     </div>
-                  </a>
+                  </a>}
+                  { table.calling &&
+                     <a href="">
+                     <div className={"CardsMesasAlertZone AlertZoneRequestTheBill"}>                        
+                       <Icon icon="notification_important" />
+                       <Typography use="overline" className={"strong"}> Pedindo a conta!</Typography>
+                     </div>
+                   </a>
+                  }
+                  { table.asking &&
+                    <a href="">                  
+                    <div className={"CardsMesasAlertZone AlertZoneRequestNewOrder"}>                        
+                      <Badge align="inline" label={table.cards[0].itens.length} style={{ background: '#2196f3' }}/>
+                      <Typography use="overline" className={"strong"}> Novo(s) pedido(s)!</Typography>
+                    </div>
+                    </a>
+                  }
+
                 </Card>
               </GridCell>
               )

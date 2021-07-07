@@ -1,5 +1,5 @@
 import React from 'react';
-import { GET_COMPANY, LOGIN } from './Api';
+import { GET_COMPANY, LOGIN, GET_VALIDATE_TOKEN } from './Api';
 import { useNavigate } from 'react-router-dom';
 
 export const UserContext = React.createContext();
@@ -29,7 +29,13 @@ export const UserStorage =({children})=>{
         setData(json);
         setLogin(true);
       }*/
-    
+      async function validaToken(token){
+        const { url, options } = GET_VALIDATE_TOKEN(token);
+        const response = await fetch(url, options);
+        if (!response.ok) throw new Error('Token inválido');
+        const {check} = await response.json()
+        return check
+      }
 
       async function userLogin(body) {
         try {
@@ -39,8 +45,16 @@ export const UserStorage =({children})=>{
           const response = await fetch(url, options);
           if (!response.ok) throw new Error(`Error: ${response.statusText}`);
           const { data } = await response.json();
-          window.localStorage.setItem('token', data.token);
-          navigate('/');
+          const checked = await validaToken(data.token)
+          if(!checked){
+            setError('Unautorized');
+            navigate('/login');
+          }else{
+            window.localStorage.setItem('token', data.token);
+            setLogin(true);
+            navigate('/');
+          }
+         
         } catch (err) {
           setError(err.message);
           setLogin(false);
@@ -49,22 +63,24 @@ export const UserStorage =({children})=>{
         }
       }
 
+ 
+
       React.useEffect(() => {
         async function autoLogin() {
           const token = window.localStorage.getItem('token');
           if (token) {
             try {
               setError(null);
-              //setLoading(true);
-              //const { url, options } = TOKEN_VALIDATE_POST(token);
-              //const response = await fetch(url, options);
-              //if (!response.ok) throw new Error('Token inválido');
+              setLoading(true);         
+              setLogin(true);
               //await getUser(token);
               //await getCompany(token)
             } catch (err) {
               userLogout();
+              setError(err.message);
+             
             } finally {
-              //setLoading(false);
+              setLoading(false);
             }
           }
         }

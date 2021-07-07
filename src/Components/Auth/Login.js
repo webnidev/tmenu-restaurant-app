@@ -5,7 +5,7 @@ import useForm from '../../Hooks/UseForm'
 const Login = () => {
   const email = useForm()
   const password = useForm()
-  const { userLogin, error } = React.useContext(UserContext);
+  const { userLogin, error, login } = React.useContext(UserContext);
   async function handleSubimit(event){  
     event.preventDefault()  
       userLogin({email: event.target.email.value, password:event.target.password.value})
