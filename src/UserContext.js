@@ -1,5 +1,5 @@
 import React from 'react';
-import { LOGIN } from './Api';
+import { GET_COMPANY, LOGIN } from './Api';
 import { useNavigate } from 'react-router-dom';
 
 export const UserContext = React.createContext();
@@ -30,6 +30,7 @@ export const UserStorage =({children})=>{
         setLogin(true);
       }*/
     
+
       async function userLogin(body) {
         try {
           setError(null);
@@ -39,7 +40,6 @@ export const UserStorage =({children})=>{
           if (!response.ok) throw new Error(`Error: ${response.statusText}`);
           const { data } = await response.json();
           window.localStorage.setItem('token', data.token);
-          //await getUser(token);
           navigate('/');
         } catch (err) {
           setError(err.message);
@@ -48,7 +48,7 @@ export const UserStorage =({children})=>{
           setLoading(false);
         }
       }
-    
+
       React.useEffect(() => {
         async function autoLogin() {
           const token = window.localStorage.getItem('token');
@@ -60,6 +60,7 @@ export const UserStorage =({children})=>{
               //const response = await fetch(url, options);
               //if (!response.ok) throw new Error('Token inválido');
               //await getUser(token);
+              //await getCompany(token)
             } catch (err) {
               userLogout();
             } finally {

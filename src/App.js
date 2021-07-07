@@ -18,14 +18,12 @@ import PrintersIndex from "./Components/Printers/PrintersIndex";
 import Login from "./Components/Auth/Login"
 import Logout from "./Components/Logout/Logout"
 import { UserStorage } from './UserContext';
-import {CompanyStorage} from './CompanyContext';
 import Product from "./Components/Menu/Product";
 const App = () => {
   return (
     <>          
     <BrowserRouter>  
       <div className={"MainContainer"}>
-        <CompanyStorage>
           <UserStorage>
             <Routes>
               <RedirectToHome path="/login" element={<Login />} />
@@ -45,7 +43,6 @@ const App = () => {
               <ProtectedRoute path="/product/:id" element={<Product/>}/>
             </Routes>
           </UserStorage>
-         </CompanyStorage>
       </div>    
       </BrowserRouter>  
     </>

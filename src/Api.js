@@ -199,7 +199,18 @@ export function GET_TABLES(token, paginate){
   }
 }
 
-
+export function PUT_ADD_WAITER_TO_TABLE(token, table_id, user_id){
+  return{
+    url:`${API_URL}manager/table/${table_id}/user/${user_id}`,
+    options:{
+      method:'PUT',
+      headers:{
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      }
+    }
+  }
+}
 
 //COMPANIES
 export function GET_COMPANY(token){

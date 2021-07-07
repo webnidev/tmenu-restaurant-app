@@ -9,24 +9,49 @@ import { Grid,
   Icon,
   SimpleMenu,
   IconButton,
-  MenuItem
+  MenuItem,
+  Dialog,
+  Select,
+  TextField,
+  DialogActions,
+  DialogButton,
+  DialogTitle,
+  DialogContent
  } from "rmwc";
 import MainNav from "../../MainNav";
 import "./Tables.css";
-import {GET_TABLES} from '../../Api'
+import {GET_TABLES, GET_COMPANY, PUT_ADD_WAITER_TO_TABLE} from '../../Api'
 import Ws from '@adonisjs/websocket-client'
-import { CompanyContext } from '../../CompanyContext'
 const TablesIndex = () => {
-  const {data, setData, getData} = React.useContext(CompanyContext)
-  setData(getData())
+
   //const url = 'wss://api.tmenu.com.br'
   const url = 'ws://localhost:3333'
   const [tables, setTables] = React.useState([])
+  const [company, setCompany] = React.useState({})
+  const [waiters, setWaiters] = React.useState([])
+  const [open, setOpen] = React.useState(false)
   const [paginate, setPaginate] = React.useState({total:0, perPage:5, page:1, lastpage:0})
+  const [tableid, setTableid] = React.useState(0)
   const token = window.localStorage.getItem('token') 
   const ws = Ws(url).withApiToken(token).connect()
   const order = ws.subscribe('notifications')
-  console.log(data.waiters)
+
+  function getWaiters(waiters){
+    const wt = {}
+    waiters.map(waiter=>{
+      wt[waiter.id] = waiter.name      
+    })
+    return wt
+  }
+  
+  const getCompany = async () =>{
+    const {url, options} = GET_COMPANY(token)
+    const response = await fetch(url, options)
+    const {companys} = await response.json()
+    setCompany(companys)
+    setWaiters(getWaiters(companys.waiters))
+  }
+
   const getTables = async ()=>{
     try {     
       const {url, options} = GET_TABLES(token, paginate)
@@ -41,26 +66,53 @@ const TablesIndex = () => {
   }
 
   const setWaiter = async event =>{
-    event.preventDefault()
+    event.preventDefault()  
     try {
-      console.log(event.target)      
+      const {url, options} = PUT_ADD_WAITER_TO_TABLE(token, tableid, event.target.waiter.value)
+      const response = await fetch(url, options)
+      if(!response.ok) throw new Error(`Error: ${response.statusText}`)
+      getTables()      
     } catch (error) {
       console.log(error)
     }
   }
 
+const setTable = (table_id) =>{
+  setTableid(table_id)
+  setOpen(true)
+}
   order.on('new:order', ()=>{
     getTables()
   })
   
   React.useEffect(()=>{
     getTables()
+    getCompany()
   },[])
   
+
+
   return (
     <>          
     <MainNav/>
-    {console.log(tables)}
+    <Dialog open={open} onClose={evt => {
+      console.log(evt.detail.action);
+      setOpen(false);
+    }}
+  onClosed={evt => console.log(evt.detail.action)}>
+      <DialogTitle>Cadastrar novo item no cardápio</DialogTitle>
+      <form onSubmit={setWaiter}>
+      <DialogContent>     
+          {company && <Select label="Selecione o garçom" name="waiter" options={waiters}/>}
+      </DialogContent>
+      <DialogActions>
+        <DialogButton className={"BtnSecondaryAction"} action="close">Cancelar</DialogButton>
+        <DialogButton className={"BtnDefaultTmenu"} action="accept" isDefaultAction>
+          Definir!
+        </DialogButton>
+      </DialogActions>
+      </form>
+    </Dialog>
      <div className={"PageContainer"}>
           <div className={"PageTitle"}>        
             <h1><Typography use="headline1">Mesas</Typography></h1>             
@@ -71,6 +123,7 @@ const TablesIndex = () => {
                 <GridCell span={3}>
                 <Card>
                   <Grid>  
+                  
                       <GridRow>
                         <GridCell span={6}>
                           { table.status && <Badge className={"TmenuSuccess"} align="inline" label="Em atendimento" />} 
@@ -81,8 +134,8 @@ const TablesIndex = () => {
                                   <MenuItem><Icon icon="add_circle_outline" /> Incluir Pedido</MenuItem>
                                   <MenuItem><Icon icon="visibility" /> Ver Extrato</MenuItem>
                                   <MenuItem><Icon icon="account_balance_wallet" /> Fechar Conta</MenuItem>
-                                  <MenuItem><Icon icon="add_to_queue" /> Abrir Mesa</MenuItem>
-                                  <MenuItem><Icon icon="switch_account"  onClick={setWaiter}/> Definir Garçom</MenuItem>
+                                  {!table.status && <MenuItem><Icon icon="add_to_queue" /> Abrir Mesa</MenuItem>}
+                                  <MenuItem onClick={()=>setTable(table.id)}><Icon icon="switch_account" /> Definir Garçom</MenuItem>
                           </SimpleMenu>
                         </GridCell>
                       </GridRow>
