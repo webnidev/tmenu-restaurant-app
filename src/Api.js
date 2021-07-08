@@ -225,6 +225,21 @@ export function PUT_ADD_WAITER_TO_TABLE(token, table_id, user_id){
   }
 }
 
+export function PUT_UPDATE_TABLE(token, body, id){
+  const url = `${API_URL}manager/table/${id}`
+  return{
+    url:url,
+    options:{
+      method:'PUT',
+      headers:{
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify(body)
+    }
+  }
+}
+
 //COMPANIES
 export function GET_COMPANY(token){
   return{

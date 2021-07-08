@@ -20,7 +20,7 @@ import { Grid,
  } from "rmwc";
 import MainNav from "../../MainNav";
 import "./Tables.css";
-import {GET_TABLES, GET_COMPANY, PUT_ADD_WAITER_TO_TABLE} from '../../Api'
+import {GET_TABLES, GET_COMPANY, PUT_ADD_WAITER_TO_TABLE, PUT_UPDATE_TABLE} from '../../Api'
 import Ws from '@adonisjs/websocket-client'
 const TablesIndex = () => {
 
@@ -32,9 +32,12 @@ const TablesIndex = () => {
   const [open, setOpen] = React.useState(false)
   const [paginate, setPaginate] = React.useState({total:0, perPage:5, page:1, lastpage:0})
   const [tableid, setTableid] = React.useState(0)
+  const [message, setMessage] = React.useState('')
   const token = window.localStorage.getItem('token') 
   const ws = Ws(url).withApiToken(token).connect()
+  const ws1 = Ws(url).withApiToken(token).connect()
   const order = ws.subscribe('notifications')
+  const account = ws1.subscribe('account')
 
   function getWaiters(waiters){
     const wt = {}
@@ -81,10 +84,30 @@ const setTable = (table_id) =>{
   setTableid(table_id)
   setOpen(true)
 }
-  order.on('new:order', ()=>{
+  order.on('new:order', (response)=>{
+    console.log(response)
     getTables()
   })
-  
+  account.on('new:card', (response)=>{
+    getTables()
+  })
+const openTable = async event =>{
+  event.preventDefault()
+  try {
+    const body ={
+      status:true
+    }
+    const {url, options} = PUT_UPDATE_TABLE(token,body, event.target.id)
+    const response = await fetch(url, options)
+    if(!response.ok) throw new Error(`Error: ${response.statusText}`)
+    const {table} = await response.json()
+    setMessage(`Mesa ${table.number} aberta`)
+    getTables()
+  } catch (error) {
+    console.log(error)
+  }
+}
+
   React.useEffect(()=>{
     getTables()
     getCompany()
@@ -134,7 +157,7 @@ const setTable = (table_id) =>{
                                   <MenuItem><Icon icon="add_circle_outline" /> Incluir Pedido</MenuItem>
                                   <MenuItem><Icon icon="visibility" /> Ver Extrato</MenuItem>
                                   <MenuItem><Icon icon="account_balance_wallet" /> Fechar Conta</MenuItem>
-                                  {!table.status && <MenuItem><Icon icon="add_to_queue" /> Abrir Mesa</MenuItem>}
+                                  {!table.status && <MenuItem onClick={openTable} id={table.id}><Icon icon="add_to_queue" /> Abrir Mesa</MenuItem>}
                                   { table.status && <MenuItem onClick={()=>setTable(table.id)}><Icon icon="switch_account" /> Definir Garçom</MenuItem>}
                           </SimpleMenu>
                         </GridCell>
@@ -161,7 +184,7 @@ const setTable = (table_id) =>{
                   { table.asking &&
                     <a href="">                  
                     <div className={"CardsMesasAlertZone AlertZoneRequestNewOrder"}>                        
-                      <Badge align="inline" label={table.cards[0].itens.length} style={{ background: '#2196f3' }}/>
+                      <Badge align="inline" label={table.orders} style={{ background: '#2196f3' }}/>
                       <Typography use="overline" className={"strong"}> Novo(s) pedido(s)!</Typography>
                     </div>
                     </a>
