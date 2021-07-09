@@ -240,12 +240,58 @@ export function PUT_UPDATE_TABLE(token, body, id){
   }
 }
 
+export function PUT_CLOSE_TABLE(token, id, body){
+  return{
+    url:`${API_URL}manager/close-table/${id}`,
+    options:{
+      method:'PUT',
+      headers:{
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`  
+      },
+      body:JSON.stringify(body)
+    }
+  }
+}
+
 //COMPANIES
 export function GET_COMPANY(token){
   return{
     url:API_URL+'manager/company',
     options:{
       method:'GET',
+      headers:{
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`  
+      }
+    }
+  }
+}
+
+//ORDERS
+
+export function GET_LAST_ORDERS(token, id){
+  return{
+    url:`${API_URL}manager/order-card/${id}`,
+    options:{
+      method:'GET',
+      headers:{
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`  
+      }
+    }
+  }
+}
+
+
+
+//CARDS
+
+export function PUT_CLOSE_ORDER(token, id){
+  return{
+    url:`${API_URL}manager/card/${id}`,
+    options:{
+      method:'PUT',
       headers:{
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`  
