@@ -26,6 +26,8 @@ import MainNav from "../../MainNav";
 import {GET_PRODUCTS} from '../../Api'
 import Pagination from '../Pagination/Pagination'
 import CategoryList from "../Category/CategoryList";
+import  Modal from '../Modal/Modal'
+import Content from '../Menu/AddProduct'
 const MenuIndex = () => {
   const [open, setOpen] = React.useState(false);
   const [data, setData] = React.useState([])
@@ -121,15 +123,17 @@ const MenuIndex = () => {
 
   return (
     <>
+           
           <MainNav />
           <div className={"PageContainer"}>
+          <Modal open={open} setOpen={setOpen} Content={Content}/>
           <div className={"PageTitle"}>        
             <h1><Typography use="headline1">Cardápio</Typography></h1>             
           </div>
             <Grid className={"CustomContainer"}>
             <GridRow>
                     <GridCell span={8}>
-                      <Button className={"BtnDefaultTmenu"} label="Cadastrar Item" icon="add" onClick={()=>cadastrarNovo()} />
+                      <Button className={"BtnDefaultTmenu"} label="Cadastrar Item" icon="add" onClick={()=>setOpen(!open)} />
                       <SimpleMenu handle={<Button className={"BtnDefaultTmenu"} label="Filtrar por Categoria" icon="filter_list" />}>
                         <CategoryList data={data} handleSearchToCategory={handleSearchToCategory}/>
                       </SimpleMenu>

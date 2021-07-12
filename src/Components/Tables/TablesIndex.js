@@ -172,9 +172,9 @@ const openTable = async event =>{
       console.log(evt.detail.action);
       setOpenbilling(false);
     }}
-  onClosed={evt => console.log(evt.detail.action)}>
+  onClosed={evt => console.log(evt.detail.action)} >
       <DialogTitle>Fechar conta da mesa</DialogTitle>
-          <form onSubmit={closeTable}>
+          <form onSubmit={closeTable} >
           <DialogContent>     
               loijnnns
           </DialogContent>
