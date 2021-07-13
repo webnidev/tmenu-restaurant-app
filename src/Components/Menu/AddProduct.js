@@ -22,8 +22,8 @@ import { Grid, GridCell, GridRow,
     IconButton,
     Icon
   } from "rmwc";
-  import MainNav from '../../MainNav'
   import { GET_PRINTERS, GET_CATEGORIES, POST_PRODUCT } from '../../Api';
+  import './Product.css'
 const AddProduct =()=>{
     const [printer, setPrinter] = React.useState('')
     const [category, setCategory] = React.useState('')
@@ -89,13 +89,17 @@ const AddProduct =()=>{
     return(
         <>
         
-        <div className={"PageContainer"}>
-          <div className={"PageTitle"}>        
-            <h1><Typography use="headline1">Cadastrar Ítem</Typography></h1>             
+        <div>
+          <div className="title">        
+          <h1><Typography use="headline5">Cadastrar Ítem</Typography></h1>   
           </div>
-        
-        <form  onSubmit={handleSubimit}>
+        <section className="containerAbas">
+        <input type="radio" name="abas" class="abas" id="aba1" checked/>
+        <label for="aba1">Dados do produto</label>
+        <div>
+        <form  onSubmit={handleSubimit}>      
             <div className="formContainer"> 
+            
                 <Grid>
                     <GridRow>
                         <GridCell span={12}>
@@ -144,6 +148,12 @@ const AddProduct =()=>{
                 </Grid>
             </div>
         </form>
+        </div>
+        <input type="radio" name="abas" class="abas" id="aba2" />
+        <label for="aba2">Complementos</label>
+        <div>Complementos</div>
+
+        </section>
         </div>
         </>
     )

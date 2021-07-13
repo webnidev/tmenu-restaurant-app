@@ -1,0 +1,38 @@
+.title{
+    margin-left: 2rem;
+}
+
+.containerAbas{
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    margin-top: 2rem;
+}
+
+input.abas {
+    display: none;
+}
+label{
+    margin-left: 1rem;
+}
+input.abas + label + div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 1rem;
+    width:10%;
+    height: 88%;
+    opacity: 0;
+    transition: opacity ease-in-out .3s;
+}
+
+input.abas:checked + label + div {
+    opacity: 1;
+    z-index: 1000;
+}
+
+input.abas:checked + label {
+    background-image: linear-gradient(#0073ec, #000);
+    color: #ffffff;
+}
