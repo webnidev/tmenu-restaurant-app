@@ -20,9 +20,11 @@ import { Grid, GridCell, GridRow,
     Select,
     Badge,
     IconButton,
-    Icon
+    Icon,
+    Switch,
+    Radio
   } from "rmwc";
-  import { GET_PRINTERS, GET_CATEGORIES, POST_PRODUCT } from '../../Api';
+  import { GET_PRINTERS, GET_CATEGORIES, POST_PRODUCT, GET_ATTRIBUTES } from '../../Api';
   import './Product.css'
 const AddProduct =()=>{
     const [printer, setPrinter] = React.useState('')
@@ -34,8 +36,10 @@ const AddProduct =()=>{
     const [aimage, setAimage] = React.useState(false)
     const [product,setProduc] = React.useState(null)
     const[loadind, setLoading] = React.useState(false)
-
-
+    const [value, setValue] = React.useState('withOutComplement')
+    const [attributes, setAttributes] = React.useState({})
+    const [formAttribute, setFormAttribute] = React.useState(true)
+    const token = window.localStorage.getItem('token')
     const setData=(data)=>{
         const interData = {}
         data.map(obj => {
@@ -46,7 +50,6 @@ const AddProduct =()=>{
 
     const getData = async ()=>{
         try {
-            const token = window.localStorage.getItem('token')
             if(!token) throw new Error('Token inválido!')
             const optionsPrinter = GET_PRINTERS(token)
             const optionsCategory = GET_CATEGORIES(token, {page:1, perPage:0})
@@ -63,6 +66,13 @@ const AddProduct =()=>{
         }
     }
 
+    const getAttributes = async ()=>{
+        const {url, options} = GET_ATTRIBUTES(token)
+        const response = await fetch(url, options)
+        if(!response.ok) throw new Error(response.statusText)
+        const {attributes} = await response.json()
+        setAttributes(attributes)
+    }
     const handleSubimit = async  event=>{
         event.preventDefault()
        try {
@@ -76,8 +86,6 @@ const AddProduct =()=>{
                 category_id: parseInt(category),
                 printer_id: parseInt(printer)
            }
-           console.log(body)
-           const token = window.localStorage.getItem('token')
            if(!token) throw new Error('Token inválido!')
            const {url, options} = POST_PRODUCT(token, body)
            const response = await fetch(url, options)
@@ -114,8 +122,19 @@ const AddProduct =()=>{
         setAimage(true)
     }
 
+    const addAttribute = async event =>{
+        event.preventDefault()
+        try {
+           
+
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     React.useEffect(()=>{
         getData()
+        getAttributes()
     },[])
 
     return(
@@ -147,7 +166,7 @@ const AddProduct =()=>{
                     <GridRow>
                         <GridCell span={12}>
                             <GridRow>
-                            <GridCell span={7}>                                
+                                <GridCell span={7}>                                
                                     <Select label="Selecione a categoria (Obrigatório)" 
                                     options={categories}
                                     onChange={(evt)=>setCategory(evt.currentTarget.value)}
@@ -194,8 +213,81 @@ const AddProduct =()=>{
             </div>
         </form>}
         {product && <div>O Produto {product.name} está cadastrado, adicione imagem e Complementos</div>}
-        {acomplement && product &&<div>Complemento do {product.name}</div>}
-        {acomplement && !product &&<div>Nenhum produto cadastrado</div>}
+        {acomplement && /*product &&*/
+        <div className="complementContainer">
+            <h3><Typography use="headline6">Complementos</Typography></h3>
+            <h5><Typography use="body1">Seu produto possui complementos? Informe abaixo.</Typography></h5>
+            <Grid>
+                <GridRow>
+                    <GridCell span={12}>
+                        <GridRow>
+                            <GridCell>
+                                <span><Radio  value="withComplement" checked={value==='withComplement'}
+                                 onChange={evt => setValue(String(evt.currentTarget.value))}
+                                >Possui complemento</Radio></span>
+                                <span><Radio   value="withOutComplement" checked={value==='withOutComplement'}
+                                 onChange={evt => setValue(String(evt.currentTarget.value))}
+                                >Não possui complemento</Radio></span>
+                            </GridCell>
+                        </GridRow>
+                        {value === 'withComplement' &&
+                        <GridRow>
+                            {console.log(attributes)}
+                             <SimpleMenu handle={<Button  label="Complementos" icon="filter_list" />}>
+                                 {  attributes &&
+                                     attributes.map(attribute=>{
+                                         return(
+                                            <MenuItem  value={attribute.id}>{attribute.title}</MenuItem>
+                                         )
+                                     })
+                                 }
+                             </SimpleMenu>
+                        </GridRow>}      
+                </GridCell> 
+                </GridRow>
+            </Grid>
+                    <Grid>
+            {  formAttribute && <GridRow>
+                            <form onSubmit={addAttribute}> 
+                                <GridRow>
+                                    <GridCell span={6}>
+                                    <TextField type="text" name="title" fullwidth placeholder="Nome"  />
+                                    </GridCell>
+                                    <GridCell span={6}>
+                                    <TextField type="text" name="description" fullwidth placeholder="Descrição"  />
+                                    </GridCell>
+                                </GridRow>
+                                <GridRow>
+                                    <GridCell span={6}>
+                                    <TextField type="number" name="max_item" fullwidth placeholder="Número máximo de itens"  />
+                                    </GridCell>
+                                    <GridCell span={6}>
+                                    <Switch  label="Item obrigatório?" name="required" />
+                                    </GridCell>
+                                </GridRow>
+                                <GridRow>
+                                    <GridCell span={6}></GridCell>
+                                    <GridCell span={6}>
+                                    <Button label="Cadastrar" outlined icon="add" className={"BtnDefaultSearch"} type="submit"/>
+                                    </GridCell>
+                                </GridRow>
+
+                            </form>
+                        </GridRow>}
+
+                        </Grid>
+                        <Grid>
+                        <GridRow>
+                            <GridCell span={9}>                                
+                            </GridCell>
+                        <GridCell span={3}>
+                            <Button label={loadind?"Aguarde...":"Proximo"} outlined icon="add" className={"BtnDefaultSearch"} type="submit" />
+                        </GridCell>
+                        </GridRow> 
+                        </Grid>
+        </div>
+        }
+        {/*acomplement && !product &&<div>Nenhum produto cadastrado</div>*/}
         {aimage && <div>Imagens</div>}
         </div>
         </>
