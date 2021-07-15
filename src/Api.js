@@ -309,10 +309,11 @@ export function POST_ADD_IMAGE_PRODUCT(token,formData){
     options:{
       method:'POST',
       headers:{
-        'Content-Type': 'application/json',
+        //'Content-Type': ' multipart/form-data',
+        //'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`  
-      }
-    },
-    body:formData
+      },
+      body:formData
+    }
   }
 }

@@ -22,10 +22,16 @@ import { Grid, GridCell, GridRow,
     IconButton,
     Icon,
     Switch,
-    Radio
+    Radio,
+    ImageList,
+    ImageListItem,
+    ImageListImageAspectContainer,
+    ImageListImage,
+    ImageListSupporting,
+    ImageListLabel
   } from "rmwc";
   import useForm from '../../Hooks/UseForm'
-  import { GET_PRINTERS, GET_CATEGORIES, POST_PRODUCT, 
+  import { API_URL ,GET_PRINTERS, GET_CATEGORIES, POST_PRODUCT, 
     GET_ATTRIBUTES, POST_ATTRIBUTE,
     PUT_PRODUCT_ATTRIBUTE, GET_PRODUCT,
     POST_ATTRIBUTE_VALUE, POST_ADD_IMAGE_PRODUCT } from '../../Api';
@@ -145,6 +151,10 @@ const AddProduct =()=>{
         setAproduct(false)
         setAimage(true)
     }
+
+    const closeAll = ()=>{
+        window.location.href = "/cardapio"
+    }
     const attributeToProduct = async event =>{
         event.preventDefault()
         try {
@@ -222,18 +232,18 @@ const AddProduct =()=>{
 
     const handleImgSubmit = async event =>{
         event.preventDefault()
-        const files = event.target.files;
         try {
+            const file = img.raw
             const formData = new FormData()
-            for(let i = 0; i < files.length; i++){
-                formData.append(`file[${i}]`, files[i])
+            for(let i = 0; i < file.length; i++){
+                formData.append(`file[${i}]`, file[i])
             }
-            
             formData.append('product_id', product.id)
             const {url, options} = POST_ADD_IMAGE_PRODUCT(token,formData)
-            console.log(img)
             const response = await fetch(url, options)
             if(!response.ok) throw new Error(response.statusText)
+            const {message} = await response.json()
+            alert(message)
             getProduct()
         } catch (error) {
             console.log(error)
@@ -364,7 +374,6 @@ const AddProduct =()=>{
                         <Grid>
                         <GridRow>
                             <GridCell>
-                            {console.log(attributes)}
                              <SimpleMenu handle={<Button  label="Complementos" icon="filter_list" />}>
                                  {  attributes &&
                                      attributes.map(attribute=>{
@@ -488,6 +497,26 @@ const AddProduct =()=>{
                 <Grid>
                     <GridRow>
                         <GridCell span={12}>
+                            { product.images && <GridRow>
+                                <GridCell span={12}>
+                                    <ImageList>
+                                        {
+                                            product.images.map(image=>(
+                                                <ImageListItem
+                                                key={image.id}
+                                                style={{ margin: '2px', width: 'calc(100% / 5 - 4.2px)' }}
+                                              >
+                                                <ImageListImageAspectContainer
+                                                  style={{ paddingBottom: 'calc(100% / 1.5)' }}
+                                                >
+                                                  <ImageListImage src={`${API_URL}manager/image-product/${image.id}?token=${token}`} />
+                                                </ImageListImageAspectContainer>
+                                              </ImageListItem>
+                                            ))
+                                        }
+                                    </ImageList>
+                                </GridCell>
+                            </GridRow>}
                             <GridRow>
                                 <GridCell span={12}>
                                 <h3><Typography use="headline6">Adicione fotos para {product.name}</Typography></h3>
@@ -496,13 +525,22 @@ const AddProduct =()=>{
                             <form onSubmit={handleImgSubmit}>
                             <GridRow>
                                 <GridCell span={6}>
-                                    <input type="file" name="file" onChange={handleImgChange} multiple/>
+                                    <input type="file" name="file[]" onChange={handleImgChange} multiple/>
                                 </GridCell>
                                 <GridCell span={6}>
                                 <Button label="Salvar" outlined icon="add" className={"BtnDefaultSearch"} type="submit"/>
                                 </GridCell>
                             </GridRow>
                             </form>
+                        </GridCell>
+                    </GridRow>
+                </Grid>
+                <Grid>
+                    <GridRow>
+                        <GridCell span={9}>
+                        </GridCell>
+                        <GridCell span={3}>
+                        <Button label="Concluir" outlined  className={"BtnDefaultSearch"} onClick={()=>closeAll()}/>
                         </GridCell>
                     </GridRow>
                 </Grid>
