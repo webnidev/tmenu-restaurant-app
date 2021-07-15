@@ -1,6 +1,6 @@
 import React from 'react'
 import { useHistory, useParams } from 'react-router-dom'
-import { GET_ATTRIBUTES, GET_PRODUCT, POST_ATTRIBUTE, PUT_PRODUCT_ATTRIBUTE,POST_ATTRIBUTE_VALUE } from '../../Api'
+import { GET_ATTRIBUTES, GET_PRODUCT, POST_ATTRIBUTE, PUT_PRODUCT_ATTRIBUTE,POST_ATTRIBUTE_VALUE,API_URL } from '../../Api'
 import { Grid, GridCell, GridRow,
     Typography,
     Button,
@@ -23,12 +23,20 @@ import { Grid, GridCell, GridRow,
     Select,
     Badge,
     IconButton,
-    Icon
+    Icon,
+    ImageList,
+    ImageListItem,
+    ImageListImageAspectContainer,
+    ImageListImage,
+    ImageListSupporting,
+    ImageListLabel,
+    CircularProgress
   } from "rmwc";
   import MainNav from "../../MainNav";
   import useForm from '../../Hooks/UseForm'
 const Product =()=>{
    const {id} = useParams()
+   const [loadind, setLoading] = React.useState(true)
    const [product, setProduct] = React.useState({})
    const [attributes, setAttributes] = React.useState([])
    const [formAttribute, setFormAttribute] = React.useState(false)
@@ -38,6 +46,7 @@ const Product =()=>{
    const additionalValue = useForm()
    const valueName = useForm()
    const valueDescription = useForm()
+   const token = window.localStorage.getItem('token')
     const getData = async ()=>{
         try {
             const token = window.localStorage.getItem('token')
@@ -49,6 +58,8 @@ const Product =()=>{
             setProduct(product)
         } catch (error) {
             console.log(error)
+        }finally{
+            setLoading(false)
         }
     }
 
@@ -97,8 +108,6 @@ const Product =()=>{
     const attributeToProduct = async event =>{
         event.preventDefault()
         try {
-            const token = window.localStorage.getItem('token')
-            if(!token) throw new Error(`Error: Token inválido`)
             const {url, options} = PUT_PRODUCT_ATTRIBUTE(token, product.id, event.target.id)
             const response = await fetch(url, options)
             if(!response.ok) throw new Error(`Error: ${response.statusText}`)
@@ -145,7 +154,10 @@ const Product =()=>{
     },[])
     return(
         <>
+             
             <MainNav />
+            { loadind && <div className="loading" ><CircularProgress size={125} /></div>}
+            { !loadind && <>
             <Dialog open={open} onClose={evt => {
                 console.log(evt.detail.action);
                 setOpen(false);
@@ -200,17 +212,46 @@ const Product =()=>{
                         </GridCell>
                     </GridRow>
                 </Grid>
+                <br/>
+                <Grid>
+                    <GridRow>
+                        <GridCell span={12}>
+                            <h5><Typography use="headline5">Fotos de {product.name}</Typography></h5>
+                        </GridCell>
+                    </GridRow>
+                    <GridRow>
+                        <GridCell span={12}>
+                        {product.images.length > 0 && 
+                        <ImageList>
+                        { product.images.map(image=>(
+                            <ImageListItem
+                            key={image.id}
+                            style={{ margin: '2px', width: 'calc(100% / 5 - 4.2px)' }}
+                          >
+                            <ImageListImageAspectContainer
+                              style={{ paddingBottom: 'calc(100% / 1.5)' }}
+                            >
+                              <ImageListImage src={`${API_URL}manager/image-product/${image.id}?token=${token}`} />
+                            </ImageListImageAspectContainer>
+                          </ImageListItem>
+                        ))
+                       }                               
+                        </ImageList>}
+                        </GridCell>
+                    </GridRow>
+                </Grid>
+                <br/>
                 <Grid>
                 <GridRow>
                     <GridCell span={12}>
                         <GridRow>
                         <GridCell span={6}>
-                            <Typography use="headline6">Variações</Typography>
+                            <Typography use="headline6">Complementos</Typography>
                         </GridCell>
                         <GridCell span={6}>
                         { formAttribute && <Button className={"BtnDefaultTmenu"} label="Fechar" icon="filter_list" onClick={()=>setFormAttribute(!formAttribute)}/>}
                         {!formAttribute && <SimpleMenu handle={                 
-                        <Button className={"BtnDefaultTmenu"} label="Adicionar variação" icon="filter_list" />
+                        <Button className={"BtnDefaultTmenu"} label="Adicionar complemento" icon="filter_list" />
                         }>
                             <MenuItem onClick={()=>setFormAttribute(!formAttribute)}>Cadastrar variação</MenuItem>
                             { attributes && attributes.map(attribute=>{
@@ -298,6 +339,7 @@ const Product =()=>{
                 </Grid>
                 </div>
             </div>
+            </>}
         </>
     )
 }
