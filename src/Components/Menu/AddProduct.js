@@ -24,7 +24,11 @@ import { Grid, GridCell, GridRow,
     Switch,
     Radio
   } from "rmwc";
-  import { GET_PRINTERS, GET_CATEGORIES, POST_PRODUCT, GET_ATTRIBUTES } from '../../Api';
+  import useForm from '../../Hooks/UseForm'
+  import { GET_PRINTERS, GET_CATEGORIES, POST_PRODUCT, 
+    GET_ATTRIBUTES, POST_ATTRIBUTE,
+    PUT_PRODUCT_ATTRIBUTE, GET_PRODUCT,
+    POST_ATTRIBUTE_VALUE, POST_ADD_IMAGE_PRODUCT } from '../../Api';
   import './Product.css'
 const AddProduct =()=>{
     const [printer, setPrinter] = React.useState('')
@@ -36,9 +40,16 @@ const AddProduct =()=>{
     const [aimage, setAimage] = React.useState(false)
     const [product,setProduc] = React.useState(null)
     const[loadind, setLoading] = React.useState(false)
+    const [attributeid, setAttributeid] = React.useState(0)
     const [value, setValue] = React.useState('withOutComplement')
     const [attributes, setAttributes] = React.useState({})
-    const [formAttribute, setFormAttribute] = React.useState(true)
+    const [formAttribute, setFormAttribute] = React.useState(false)
+    const maxItem = useForm()
+    const additionalValue = useForm()
+    const valueName = useForm()
+    const valueDescription = useForm()
+    const [open, setOpen] = React.useState(false)
+    const [img, setImg] = React.useState({})
     const token = window.localStorage.getItem('token')
     const setData=(data)=>{
         const interData = {}
@@ -72,6 +83,19 @@ const AddProduct =()=>{
         if(!response.ok) throw new Error(response.statusText)
         const {attributes} = await response.json()
         setAttributes(attributes)
+        getProduct()
+    }
+
+    const getProduct= async () =>{
+        try {
+            const {url, options} = GET_PRODUCT(token, product.id)
+            const response = await fetch(url, options)
+            if(!response.ok) throw new Error(response.statusText)
+            const newProduct = await response.json()
+            setProduc(newProduct.product) 
+        } catch (error) {
+            console.log(error)
+        }
     }
     const handleSubimit = async  event=>{
         event.preventDefault()
@@ -121,12 +145,96 @@ const AddProduct =()=>{
         setAproduct(false)
         setAimage(true)
     }
+    const attributeToProduct = async event =>{
+        event.preventDefault()
+        try {
+            const {url, options} = PUT_PRODUCT_ATTRIBUTE(token, product.id, event.target.id)
+            const response = await fetch(url, options)
+            if(!response.ok) throw new Error(`Error: ${response.statusText}`)
+            getProduct()
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
     const addAttribute = async event =>{
         event.preventDefault()
         try {
-           
+            const body ={
+                title: event.target.title.value,
+                description: event.target.description.value,
+                max_item: event.target.max_item.value,
+                required: event.target.required.checked
+            }
+            const {url, options} = POST_ATTRIBUTE(token, body)
+            const response = await fetch(url, options)
+            if(!response.ok) throw new Error(`Error: ${response.statusText}`)
+            const {attribute} = await response.json()
+            if(attribute.id){
+                const valuesApi = PUT_PRODUCT_ATTRIBUTE(token, product.id, attribute.id)
+                const resp = await fetch(valuesApi.url, valuesApi.options)
+                if(!resp.ok) throw new Error(`Error: ${resp.statusText}`)
+                getAttributes()
+                setFormAttribute(false)
+                alert('Complemento cadastrado com sucesso!')
+            } 
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
+    const openModalAddId = (event) =>{
+        event.preventDefault()
+        setOpen(true)
+        setAttributeid(event.target.id)
+    }
+
+    const addAttributeValue = async event =>{
+        event.preventDefault()
+        try {
+           const body={
+               name:event.target.name.value,
+               description: event.target.description.value,
+               additional_value: event.target.additional_value.value,
+               max_item: event.target.max_item.value,
+               attribute_id: attributeid
+           }
+           const token = window.localStorage.getItem('token')
+           if(!token) throw new Error(`Error: Token inválido`)
+           const {url, options} = POST_ATTRIBUTE_VALUE(token, body)
+           const response = await fetch(url, options)
+           if(!response.ok) throw new Error(`Error: ${response.statusText}`)
+           getProduct()
+           valueName.setValue('')
+           valueDescription.setValue('')
+           maxItem.setValue('')
+           additionalValue.setValue('')
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    function handleImgChange({target}){
+        setImg({
+            raw:target.files
+        })
+    }
+
+    const handleImgSubmit = async event =>{
+        event.preventDefault()
+        const files = event.target.files;
+        try {
+            const formData = new FormData()
+            for(let i = 0; i < files.length; i++){
+                formData.append(`file[${i}]`, files[i])
+            }
+            
+            formData.append('product_id', product.id)
+            const {url, options} = POST_ADD_IMAGE_PRODUCT(token,formData)
+            console.log(img)
+            const response = await fetch(url, options)
+            if(!response.ok) throw new Error(response.statusText)
+            getProduct()
         } catch (error) {
             console.log(error)
         }
@@ -140,16 +248,36 @@ const AddProduct =()=>{
     return(
         <>       
         <div>
+        <Dialog open={open} onClose={evt => {
+                console.log(evt.detail.action);
+                setOpen(false);
+                }}
+            onClosed={evt => console.log(evt.detail.action)}>
+            <DialogTitle>Cadastrar valor</DialogTitle>
+            <form onSubmit={addAttributeValue}>
+            <DialogContent>
+                <TextField fullwidth placeholder="Nome" name="name" {...valueName}/>
+                <TextField fullwidth placeholder="Descrição" name="description" {...valueDescription} />
+                <TextField fullwidth placeholder="Valor adicional" name="additional_value" {...additionalValue} />
+                <TextField fullwidth placeholder="Qantidade máxima permitida" name="max_item" {...maxItem} />
+            </DialogContent>
+            <DialogActions>
+                <DialogButton className={"BtnDefaultTmenu"} action="accept" isDefaultAction>
+                Salvar!
+                </DialogButton>
+            </DialogActions>
+            </form>
+            </Dialog>
           <div className="title">        
-          <h1><Typography use="headline5">Cadastrar Ítem</Typography></h1>   
+          <h1><Typography use="headline5">{product?product.name:"Cadastrar Item"}</Typography></h1>   
           </div>
           <div className="abas">
           <Grid>
               <GridRow>
                   <GridCell span={12}>
-                          <span onClick={()=>showAproduct()}>Produto</span> 
-                          <span onClick={()=>showAcomplement()} >Complemento</span>
-                          <span onClick={()=>showAimage()} >Imagens</span>
+                          {product?<i>Produto</i>:<span onClick={()=>showAproduct()}>Produto</span>} 
+                          {!product?<i>Complemento</i>:<span onClick={()=>showAcomplement()} >Complemento</span>}
+                          {!product?<i>Imagens</i>:<span onClick={()=>showAimage()} >Imagens</span>}
                   </GridCell>
               </GridRow>
           </Grid>
@@ -212,8 +340,7 @@ const AddProduct =()=>{
                 </Grid>
             </div>
         </form>}
-        {product && <div>O Produto {product.name} está cadastrado, adicione imagem e Complementos</div>}
-        {acomplement && /*product &&*/
+        {acomplement && product &&
         <div className="complementContainer">
             <h3><Typography use="headline6">Complementos</Typography></h3>
             <h5><Typography use="body1">Seu produto possui complementos? Informe abaixo.</Typography></h5>
@@ -230,65 +357,156 @@ const AddProduct =()=>{
                                 >Não possui complemento</Radio></span>
                             </GridCell>
                         </GridRow>
+            </GridCell>
+            </GridRow>
+            </Grid>
                         {value === 'withComplement' &&
+                        <Grid>
                         <GridRow>
+                            <GridCell>
                             {console.log(attributes)}
                              <SimpleMenu handle={<Button  label="Complementos" icon="filter_list" />}>
                                  {  attributes &&
                                      attributes.map(attribute=>{
                                          return(
-                                            <MenuItem  value={attribute.id}>{attribute.title}</MenuItem>
+                                            <MenuItem  value={attribute.id} id={attribute.id} onClick={attributeToProduct}>{attribute.title}</MenuItem>
                                          )
                                      })
                                  }
                              </SimpleMenu>
-                        </GridRow>}      
-                </GridCell> 
-                </GridRow>
-            </Grid>
+                             </GridCell>
+                             <GridCell>
+                             <Button label={formAttribute?"Fechar":"Adicionar complemento"} outlined icon="add"  icon="add" onClick={()=>setFormAttribute(!formAttribute)} />
+                             </GridCell>
+                        </GridRow>       
+                </Grid>                        
+                        }                    
+            {  value === 'withComplement' && formAttribute && 
                     <Grid>
-            {  formAttribute && <GridRow>
+                        <GridRow>
+                        <GridCell span={12}>
                             <form onSubmit={addAttribute}> 
                                 <GridRow>
                                     <GridCell span={6}>
-                                    <TextField type="text" name="title" fullwidth placeholder="Nome"  />
+                                    <TextField type="text" name="title" fullwidth placeholder="Nome do complemento (obrigatório)"  required/>
                                     </GridCell>
                                     <GridCell span={6}>
-                                    <TextField type="text" name="description" fullwidth placeholder="Descrição"  />
+                                    <TextField type="text" name="description" fullwidth placeholder="Descrição (obrigatório)"  required/>
                                     </GridCell>
                                 </GridRow>
                                 <GridRow>
                                     <GridCell span={6}>
-                                    <TextField type="number" name="max_item" fullwidth placeholder="Número máximo de itens"  />
+                                    <TextField type="number" name="min_item" fullwidth placeholder="Número mínimo de itens (obrigatório)"  required/>
                                     </GridCell>
                                     <GridCell span={6}>
+                                    <TextField type="number" name="max_item" fullwidth placeholder="Número máximo de itens (obrigatório)"  required/>
+                                    </GridCell>
+                                   
+                                </GridRow>
+                                <br/>
+                                <GridRow>
+                                <GridCell span={6}>
                                     <Switch  label="Item obrigatório?" name="required" />
                                     </GridCell>
-                                </GridRow>
-                                <GridRow>
-                                    <GridCell span={6}></GridCell>
                                     <GridCell span={6}>
                                     <Button label="Cadastrar" outlined icon="add" className={"BtnDefaultSearch"} type="submit"/>
                                     </GridCell>
                                 </GridRow>
 
                             </form>
-                        </GridRow>}
-
+                            </GridCell>
+                            </GridRow>
                         </Grid>
+                        }
+                        {
+                            value === 'withComplement' &&
+                            <Grid>
+                                <GridRow>
+                                    <GridCell span={12}>
+                                        <GridRow>
+                                            <GridCell span={12}>
+                                            <h3><Typography use="headline6">Complementos de {product.name}</Typography></h3>
+                                            </GridCell>
+                                        </GridRow>
+                                        <GridRow>
+                                            <GridCell>
+                                                <DataTable className={"TabelaProdutos"}>
+                                                    <DataTableContent>
+                                                    <DataTableHead>
+                                                        <DataTableRow>
+                                                            <DataTableHeadCell>Nome</DataTableHeadCell>
+                                                            <DataTableHeadCell alignEnd>Descrição</DataTableHeadCell>
+                                                            <DataTableHeadCell alignEnd>Máximo de itens</DataTableHeadCell> 
+                                                            <DataTableHeadCell alignEnd></DataTableHeadCell>                            
+                                                        </DataTableRow>
+                                                    </DataTableHead>
+                                                    <DataTableBody>
+                                                        {
+                                                            product.attributes &&
+                                                            product.attributes.map(attribute=>{
+                                                                return(
+                                                                    <DataTableRow key={attribute.id} >
+                                                                        <DataTableCell >{attribute.title}</DataTableCell>
+                                                                        <DataTableCell alignEnd>{attribute.description}</DataTableCell>
+                                                                        <DataTableCell >{attribute.max_item}</DataTableCell>
+                                                                        <SimpleMenu handle={<Button className={"BtnDefaultTmenu"} label="Valores" icon="filter_list" />}>
+                                                                                <MenuItem onClick={openModalAddId} id={attribute.id}>Adionar valor</MenuItem>
+                                                                            {attribute.values.map(value =>{
+                                                                                return(
+                                                                                    <MenuItem  value={value.id}>{value.name}</MenuItem>
+                                                                                )
+                                                                            })
+                                                                        
+                                                                            }
+                                                                        </SimpleMenu>
+                                                                    </DataTableRow>
+                                                                )
+                                                            })
+                                                        }
+                                                    </DataTableBody>
+                                                    </DataTableContent>
+                                                </DataTable>
+                                            </GridCell>
+                                        </GridRow>
+                                    </GridCell>
+                                </GridRow>
+                            </Grid>
+                        }
                         <Grid>
                         <GridRow>
                             <GridCell span={9}>                                
                             </GridCell>
                         <GridCell span={3}>
-                            <Button label={loadind?"Aguarde...":"Proximo"} outlined icon="add" className={"BtnDefaultSearch"} type="submit" />
+                            <Button label={loadind?"Aguarde...":"Proximo"} outlined icon="add" className={"BtnDefaultSearch"} onClick={()=>showAimage()}/>
                         </GridCell>
                         </GridRow> 
                         </Grid>
         </div>
         }
-        {/*acomplement && !product &&<div>Nenhum produto cadastrado</div>*/}
-        {aimage && <div>Imagens</div>}
+        {acomplement && !product &&<div>Nenhum produto cadastrado</div>}
+        {aimage && <div className="imageContainer">
+                <Grid>
+                    <GridRow>
+                        <GridCell span={12}>
+                            <GridRow>
+                                <GridCell span={12}>
+                                <h3><Typography use="headline6">Adicione fotos para {product.name}</Typography></h3>
+                                </GridCell>
+                            </GridRow>
+                            <form onSubmit={handleImgSubmit}>
+                            <GridRow>
+                                <GridCell span={6}>
+                                    <input type="file" name="file" onChange={handleImgChange} multiple/>
+                                </GridCell>
+                                <GridCell span={6}>
+                                <Button label="Salvar" outlined icon="add" className={"BtnDefaultSearch"} type="submit"/>
+                                </GridCell>
+                            </GridRow>
+                            </form>
+                        </GridCell>
+                    </GridRow>
+                </Grid>
+            </div>}
         </div>
         </>
     )

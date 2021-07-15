@@ -15,7 +15,7 @@
     margin-left: auto;
     border: 1px solid #888;
     width: 50rem;
-    height: 100%;
+    min-height: 100%;
     animation-name: animaterigth;
     animation-duration: 0.4s
   }
@@ -24,6 +24,7 @@
     float: right;
     font-size: 28px;
     font-weight: bold;
+    margin: 1rem;
   }
   
   .close:hover,

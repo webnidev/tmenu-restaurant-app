@@ -9,8 +9,14 @@
     margin-left: 1rem;
     cursor: pointer;
 }
-
+.abas i{
+    margin-left: 1rem;
+}
 .complementContainer{
+    margin-left: 2rem;
+    margin-top: 1rem;
+}
+.imageContainer{
     margin-left: 2rem;
     margin-top: 1rem;
 }

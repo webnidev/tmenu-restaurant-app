@@ -299,3 +299,20 @@ export function PUT_CLOSE_ORDER(token, id){
     }
   }
 }
+
+
+//IMAGES
+
+export function POST_ADD_IMAGE_PRODUCT(token,formData){
+  return{
+    url:`${API_URL}manager/image-product`,
+    options:{
+      method:'POST',
+      headers:{
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`  
+      }
+    },
+    body:formData
+  }
+}
