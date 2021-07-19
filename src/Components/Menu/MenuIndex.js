@@ -21,7 +21,8 @@ import { Grid, GridCell, GridRow,
   Badge,
   IconButton,
   Icon,
-  Avatar
+  Avatar,
+  CircularProgress
 } from "rmwc";
 import MainNav from "../../MainNav";
 import {GET_PRODUCTS, API_URL} from '../../Api'
@@ -33,7 +34,7 @@ const MenuIndex = () => {
   const [open, setOpen] = React.useState(false);
   const [data, setData] = React.useState([])
   const [paginate, setPaginate] = React.useState({total:0, perPage:5, page:1, lastpage:0})
-  const [loaded, setLoaded] = React.useState(true)
+  const [loadind, setLoadind] = React.useState(true)
   const token = window.localStorage.getItem('token')
   const getData = async ()=>{
     try {
@@ -47,7 +48,7 @@ const MenuIndex = () => {
       console.log(error)
     }
     finally{
-      setLoaded(false)
+      setLoadind(false)
     }
   }
 
@@ -115,7 +116,8 @@ const MenuIndex = () => {
     <>
            
           <MainNav />
-          <div className={"PageContainer"}>
+          { loadind && <div className="loading" ><CircularProgress size={125} /></div>}
+        {!loadind &&  <div className={"PageContainer"}>
           <Modal open={open} setOpen={setOpen} Content={Content}/>
           <div className={"PageTitle"}>        
             <h1><Typography use="headline1">Cardápio</Typography></h1>             
@@ -199,7 +201,7 @@ const MenuIndex = () => {
 
             
 
-        </div>   
+        </div>   }
       
     </>
   );

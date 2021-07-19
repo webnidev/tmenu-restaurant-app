@@ -16,7 +16,8 @@ import { Grid,
   DialogActions,
   DialogButton,
   DialogTitle,
-  DialogContent
+  DialogContent,
+  CircularProgress
  } from "rmwc";
 import MainNav from "../../MainNav";
 import "./Tables.css";
@@ -31,6 +32,7 @@ const TablesIndex = () => {
   const [tables, setTables] = React.useState([])
   const [company, setCompany] = React.useState({})
   const [waiters, setWaiters] = React.useState([])
+  const [loadind, setLoading] = React.useState(true)
   const [open, setOpen] = React.useState(false)
   const [openOrder, setOpenorder] = React.useState(false)
   const [opneBilling, setOpenbilling] = React.useState(false)
@@ -44,6 +46,7 @@ const TablesIndex = () => {
   const ws1 = Ws(url).withApiToken(token).connect()
   const order = ws.subscribe('notifications')
   const account = ws1.subscribe('account')
+
 
   function getWaiters(waiters){
     const wt = {}
@@ -71,6 +74,8 @@ const TablesIndex = () => {
       setPaginate({total:tables.total, perPage:tables.perPage, page:tables.page, lastpage:tables.lastPage})
     } catch (error) {
       console.log(error)
+    }finally{
+      setLoading(false)
     }
   }
 
@@ -167,7 +172,7 @@ const openTable = async event =>{
   return (
     <>          
     <MainNav/>
-
+    { loadind && <div className="loading" ><CircularProgress size={125} /></div>}
     <Dialog open={opneBilling} onClose={evt => {
       console.log(evt.detail.action);
       setOpenbilling(false);
@@ -226,7 +231,7 @@ const openTable = async event =>{
       </DialogActions>
     </Dialog>
 
-     <div className={"PageContainer"}>
+     { !loadind && <div className={"PageContainer"}>
           <div className={"PageTitle"}>        
             <h1><Typography use="headline1">Mesas</Typography></h1>             
           </div>
@@ -288,7 +293,7 @@ const openTable = async event =>{
               
             } 
             </Grid> 
-        </div>   
+        </div>   }
       
     </>
   );

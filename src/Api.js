@@ -317,3 +317,36 @@ export function POST_ADD_IMAGE_PRODUCT(token,formData){
     }
   }
 }
+
+
+//ORDERS
+export function GET_ORDERS(token, paginate,search=null){
+  let url = `${API_URL}manager/order?page=${paginate.page}&limit=${paginate.perPage}`
+  return{
+    url:url,
+    options:{
+      method:'GET',
+      headers:{
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`  
+      }
+    }
+  }
+}
+
+
+//CLIENTES
+
+export function GET_CLIENTS(token, paginate, search=null){
+  let url = `${API_URL}manager/client?page=${paginate.page}&limit=${paginate.perPage}`
+  return{
+    url:url,
+    options:{
+      method:'GET',
+      headers:{
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`  
+      }
+    }
+  }
+}
